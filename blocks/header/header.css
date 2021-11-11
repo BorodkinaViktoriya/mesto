@@ -2,26 +2,13 @@
   font-family: "Inter", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  max-width: 1184px;
-  display: flex;
-  justify-content: space-between;
+  max-width: 880px;
   margin: 0 auto;
 }
 
-@media screen and (max-width: 1279px) {
+@media screen and (max-width: 0 ) {
   .header {
-    max-width: 91vw;
+    max-width:  0;
   }
 }
-
-@media screen and (max-width: 928px) {
-  .header {
-    max-width: 94vw;
-  }
-}
-
-@media screen and (max-width: 425px) {
-  .header {
-    max-width: 90%;
-  }
-}
+ 
