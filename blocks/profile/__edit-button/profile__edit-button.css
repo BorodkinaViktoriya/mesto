@@ -6,7 +6,7 @@
   background-image: url(../../../images/Edit\ Button.svg);
   background-size: cover;
   opacity: 1;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .profile__edit-button:hover {
