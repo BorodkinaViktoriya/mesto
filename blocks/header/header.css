@@ -4,11 +4,13 @@
   -moz-osx-font-smoothing: grayscale;
   max-width: 880px;
   margin: 0 auto;
+  border-bottom: 1px solid #545454;
+  min-height: 74px;
 }
 
-@media screen and (max-width: 0 ) {
+@media screen and (max-width: 600px) {
   .header {
-    max-width:  0;
+    max-width: 100%;
+    min-height: 56px;
   }
 }
- 

@@ -1,0 +1,9 @@
+.profile__info {
+    max-width: 336px;
+    color: #FFF;
+    display: grid;
+    grid-template-columns:294px 24px;
+    grid-template-rows: minmax(39px) minmax(18px);
+    grid-gap: 18px;
+    align-items: baseline;
+}
