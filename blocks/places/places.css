@@ -5,3 +5,24 @@
   grid-template-columns: repeat(3, 1fr );
   grid-gap: 20px 17px;
 }
+
+@media screen and (max-width: 918px) {
+  .places {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0 19px 0;
+    grid-gap: 1fr 17px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .places {
+    grid-template-columns: repeat(2, 1fr );
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .places {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

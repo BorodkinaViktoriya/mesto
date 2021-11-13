@@ -1,4 +1,4 @@
 .place__like {
-    width: 22px;
-    height: 19px;
+    min-width: 100%;
+    min-height: 100%;
 }

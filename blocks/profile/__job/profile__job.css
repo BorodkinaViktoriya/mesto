@@ -1,9 +1,22 @@
 .profile__job {
   font-weight: normal;
   font-size: 18px;
-  line-height: 22px;
+  align-self: start;
   margin: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+@media screen and (max-width: 690px) {
+  .profile__job  {
+    justify-self: center;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .profile__job {
+    font-size: 14px;
+    line-height: 17px;
+  }
 }

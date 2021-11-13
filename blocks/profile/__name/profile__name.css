@@ -7,3 +7,12 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+@media screen and (max-width: 540px) {
+  .profile__name {
+    font-size: 27px;
+    line-height: 33px;
+    
+    align-self: flex-end;
+  }
+}

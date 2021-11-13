@@ -13,7 +13,19 @@
 
 @media screen and (max-width: 720px) {
   .profile {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 690px) {
+  .profile {
     flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .profile {
     gap: 26px;
+    justify-items: baseline;
   }
 }
