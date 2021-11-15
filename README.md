@@ -18,3 +18,4 @@
 
 
 **ссылка на GitHub Pages**
+https://borodkinaviktoriya.github.io/mesto/index.html
