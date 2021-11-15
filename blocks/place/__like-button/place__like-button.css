@@ -3,11 +3,15 @@
   padding: 0;
   width: 22px;
   height: 19px;
+  background-color: transparent;
+  background-image: url(../../../images/like-disabled.svg);
+  background-position: center;
+  background-size: cover;
   opacity: 1;
   transition: opacity 0.5s;
 }
 
 .place__like-button:hover {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: pointer;
 }

@@ -3,6 +3,9 @@
   height: 50px;
   border: 2px solid #fff;
   background-color: #000;
+  background-image: url(../../images/pius.svg);
+  background-repeat: no-repeat;
+  background-position: center;
   border-radius: 2px;
   box-sizing: border-box;
   color: #fff;
@@ -14,7 +17,6 @@
   transition: opacity .5s;
 }
 
-
 .add-button:hover {
   opacity: 0.6;
   cursor: pointer;
@@ -24,5 +26,6 @@
   .add-button {
     width: 282px;
     height: 50px;
+    background-size: 16px;
   }
 }

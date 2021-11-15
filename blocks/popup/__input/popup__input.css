@@ -7,9 +7,14 @@
   line-height: 17px;
   color: #000;
   box-sizing: border-box;
-  padding: 0 0 6px;
+  padding: 0 0 6px 1px;
   border-width: 0 0 1px;
   border-color: rgba(0, 0, 0, 0.2);
+}
+
+.popup__input:focus {
+  outline-color: #69f;
+  outline-width: 1px;
 }
 
 .popup__input:last-of-type {

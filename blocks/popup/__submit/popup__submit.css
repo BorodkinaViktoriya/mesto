@@ -7,6 +7,14 @@
   color: #fff;
   font-size: 18px;
   line-height: 22px;
+  opacity: 1;
+  transition: opacity 0.5s;
+  padding: 0;
+}
+
+.popup__submit:hover {
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 690px) {
