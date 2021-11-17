@@ -2,10 +2,11 @@
   font-weight: normal;
   font-size: 18px;
   line-height: 22px;
+  margin: 0;
   color: #545454;
 }
 
-@media screen and (max-width: 5401px) {
+@media screen and (max-width: 540px) {
   .footer__text {
     font-size: 14px;
     line-height: 17px;

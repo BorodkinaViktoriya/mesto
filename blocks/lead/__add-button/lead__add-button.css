@@ -1,9 +1,9 @@
-.add-button {
+.lead__add-button {
   width: 150px;
   height: 50px;
   border: 2px solid #fff;
   background-color: #000;
-  background-image: url(../../images/pius.svg);
+  background-image: url(../../../images/pius.svg);
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 2px;
@@ -17,13 +17,13 @@
   transition: opacity .5s;
 }
 
-.add-button:hover {
+.lead__add-button:hover {
   opacity: 0.6;
   cursor: pointer;
 }
 
 @media screen and (max-width: 540px) {
-  .add-button {
+  .lead__add-button {
     width: 282px;
     height: 50px;
     background-size: 16px;
