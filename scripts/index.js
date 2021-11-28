@@ -37,10 +37,10 @@ const nameInput = popup.querySelector('.popup__input_value_name');
 const jobInput = popup.querySelector('.popup__input_value_job');
 
 function render() {
-  const card = initialPlaces.map((item) => {
+  const places = initialPlaces.map((item) => {
     return getItem(item);
   });
-  PlacesContainer.append(...card);
+  PlacesContainer.append(...places);
 }
 
 function getItem(item) {
