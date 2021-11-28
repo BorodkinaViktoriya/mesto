@@ -1,131 +1,77 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Mesto</title>
-    <meta name="author" content="Бородкина Виктория" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./pages/index.css" />
-  </head>
-  <body>
-    <div class="page">
-      <header class="header">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Mesto</title>
+  <meta name="author" content="Бородкина Виктория"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="./pages/index.css"/>
+  <script src="./scripts/index.js" defer></script>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <img
+      src="./images/logo.svg"
+      class="header__logo"
+    />
+  </header>
+  <main>
+    <section class="lead">
+      <div class="profile">
         <img
-          src="./images/logo.svg"
-          alt="Логотип  место россия"
-          class="header__logo"
+          class="profile__foto"
+          src="./images/Avatar.jpg"
+          alt="аватар профиля"
         />
-      </header>
-      <main>
-        <section class="lead">
-          <div class="profile">
-            <img
-              class="profile__foto"
-              src="./images/Avatar.jpg"
-              alt="аватар профиля"
-            />
-            <div class="profile__info">
-              <h1 class="profile__name">Жак-Ив Кусто</h1>
-              <button class="profile__edit-button" type="button"></button>
-              <p class="profile__job">Исследователь океана</p>
-            </div>
-          </div>
-          <button class="lead__add-button" type="button"></button>
-        </section>
-        <section class="places">
-          <figure class="place">
-            <img
-              class="place__image"
-              src="./images/Karachaevsk.jpg"
-              alt="Храм из красного кирпичв на фоне зеленой горы"
-            />
-            <figcaption class="place__caption">
-              <h2 class="place__title">Карачаевск</h2>
-              <button class="place__like-button" type="button"></button>
-            </figcaption>
-          </figure>
-          <figure class="place">
-            <img
-              class="place__image"
-              src="./images/elbrus.jpg"
-              alt="Гора эльбрус вдали на закате"
-            />
-            <figcaption class="place__caption">
-              <h2 class="place__title">Гора Эльбрус</h2>
-              <button class="place__like-button" type="button"></button>
-            </figcaption>
-          </figure>
-          <figure class="place">
-            <img
-              class="place__image"
-              src="./images/dombai.jpg"
-              alt="Серая гора окруженная серыми тучами"
-            />
-            <figcaption class="place__caption">
-              <h2 class="place__title">Домбай</h2>
-              <button class="place__like-button" type="button"></button>
-            </figcaption>
-          </figure>
-          <figure class="place">
-            <img
-              class="place__image"
-              src="./images/elbrus.jpg"
-              alt="Гора эльбрус вдали на закате"
-            />
-            <figcaption class="place__caption">
-              <h2 class="place__title">Гора Эльбрус</h2>
-              <button class="place__like-button" type="button"></button>
-            </figcaption>
-          </figure>
-          <figure class="place">
-            <img
-              class="place__image"
-              src="./images/dombai.jpg"
-              alt="Серая гора окруженная серыми тучами"
-            />
-            <figcaption class="place__caption">
-              <h2 class="place__title">Домбай</h2>
-              <button class="place__like-button" type="button"></button>
-            </figcaption>
-          </figure>
-          <figure class="place">
-            <img
-              class="place__image"
-              src="./images/Karachaevsk.jpg"
-              alt="Храм из красного кирпичв на фоне зеленой горы"
-            />
-            <figcaption class="place__caption">
-              <h2 class="place__title">Карачаево-Черкесия</h2>
-              <button class="place__like-button" type="button"></button>
-            </figcaption>
-          </figure>
-        </section>
-      </main>
-      <footer class="footer">
-        <p class="footer__text">&copy; 2020 Mesto Russia</p>
-      </footer>
-      <div class="popup">
-        <div class="popup__container">
-          <form class="popup__form" name="profile-form">
-            <fieldset class="popup__contact-info">
-              <legend class="popup__title">Редактировать профиль</legend>
-              <input
-                type="text"
-                class="popup__input popup__input_value_name"
-                name="name"
-              />
-              <input
-                type="text"
-                class="popup__input popup__input_value_job"
-                name="job"
-              />
-            </fieldset>
-            <button class="popup__close-button" type="button"></button>
-            <button class="popup__submit" type="submit">Cохранить</button>
-          </form>
+        <div class="profile__info">
+          <h1 class="profile__name">Жак-Ив Кусто</h1>
+          <button class="profile__edit-button" type="button"></button>
+          <p class="profile__job">Исследователь океана</p>
         </div>
       </div>
+      <button class="lead__add-button" type="button"></button>
+    </section>
+    <section class="places">
+    </section>
+  </main>
+  <footer class="footer">
+    <p class="footer__text">&copy; 2020 Mesto Russia</p>
+  </footer>
+  <div class="popup">
+    <div class="popup__container">
+      <form class="popup__form" name="profile-form">
+        <fieldset class="popup__contact-info">
+          <legend class="popup__title">Редактировать профиль</legend>
+          <input
+            type="text"
+            class="popup__input popup__input_value_name"
+            name="name"
+          />
+          <input
+            type="text"
+            class="popup__input popup__input_value_job"
+            name="job"
+          />
+        </fieldset>
+        <button class="popup__close-button" type="button"></button>
+        <button class="popup__submit" type="submit">Cохранить</button>
+      </form>
     </div>
-    <script src="./scripts/index.js"></script>
-  </body>
+  </div>
+</div>
+<template class="template">
+  <figure class="place">
+    <img
+      class="place__image"
+      src="#"
+      alt=""
+    />
+    <figcaption class="place__caption">
+      <h2 class="place__title"></h2>
+      <button class="place__like-button" type="button"></button>
+    </figcaption>
+  </figure>
+</template>
+</body>
 </html>
