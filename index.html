@@ -13,7 +13,7 @@
   <header class="header">
     <img
       src="./images/logo.svg"
-      class="header__logo"
+      class="header__logo" alt="Аватврка"
     />
   </header>
   <main>
@@ -38,20 +38,41 @@
   <footer class="footer">
     <p class="footer__text">&copy; 2020 Mesto Russia</p>
   </footer>
-  <div class="popup">
+  <div class="popup popup_contain_profile">
     <div class="popup__container">
-      <form class="popup__form" name="profile-form">
+      <form class="popup__form" name="profileForm">
         <fieldset class="popup__contact-info">
           <legend class="popup__title">Редактировать профиль</legend>
           <input
             type="text"
             class="popup__input popup__input_value_name"
-            name="name"
+            name="name" placeholder="Ваше имя"
           />
           <input
             type="text"
             class="popup__input popup__input_value_job"
-            name="job"
+            name="job" placeholder="Род занятий"
+          />
+        </fieldset>
+        <button class="popup__close-button" type="button"></button>
+        <button class="popup__submit" type="submit">Cохранить</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_contain_places">
+    <div class="popup__container">
+      <form class="popup__form" name="placeForm">
+        <fieldset class="popup__contact-info">
+          <legend class="popup__title">Новое место</legend>
+          <input
+            type="text"
+            class="popup__input popup__input_value_place-name"
+            name="place-name" placeholder="Название"
+          />
+          <input
+            type="text"
+            class="popup__input popup__input_value_place-link"
+            name="place-link" placeholder="Ссылка на картинку"
           />
         </fieldset>
         <button class="popup__close-button" type="button"></button>
