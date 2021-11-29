@@ -63,9 +63,16 @@ function getItem(item) {
     return newItem;
 }
 
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+}
+
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
 
 function handleProfileForm() {
-  popupProfile.classList.add('popup_opened');
+  openPopup(popupProfile);
   nameInput.value = nameProfile.textContent;
   jobInput.value = jobProfile.textContent;
 }
@@ -75,7 +82,7 @@ function ProfileSubmitHandler(evt) {
   evt.preventDefault();
   nameProfile.textContent = nameInput.value;
   jobProfile.textContent = jobInput.value;
-  popupProfile.classList.remove('popup_opened');
+  closePopup(popupProfile);
 }
 
 
@@ -83,13 +90,12 @@ function placeSubmitHandler(evt) {
   evt.preventDefault();
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
-  console.log(placeNameInput.value)
-  if (placeNameInput.value == "" && placeLinkInput.value == "") {
-    closePopupPlace()
+  if (placeNameInput.value ==="" && placeLinkInput.value ==="") {
+    closePopup(popupPlaces);
   } else {
     const placeItem = getItem({name: placeName, link: placeLink});
     placesContainer.prepend(placeItem);
-    closePopupPlace()
+    closePopup(popupPlaces);
     placeNameInput.value = '';
     placeLinkInput.value = '';
   }
@@ -107,24 +113,12 @@ function handleLike(event) {
 }
 
 
-function ClosePopup() {
-  popupProfile.classList.remove('popup_opened');
-}
-
-//открытие попапа добавления фоток
-function addPButtonHandler() {
-  popupPlaces.classList.add('popup_opened');
-}
-
-function closePopupPlace() {
-  popupPlaces.classList.remove('popup_opened');
-}
 
 
 editButton.addEventListener('click', handleProfileForm);
-addButton.addEventListener('click', addPButtonHandler);
-popupProfileClose.addEventListener('click', ClosePopup);
+addButton.addEventListener('click',()=>openPopup(popupPlaces));
+popupProfileClose.addEventListener('click',()=>closePopup(popupProfile));
 profileForm.addEventListener('submit', ProfileSubmitHandler);
 placeForm.addEventListener('submit', placeSubmitHandler);
-placesCloseButton.addEventListener('click', closePopupPlace);
+placesCloseButton.addEventListener('click',()=>closePopup(popupPlaces));
 render();
