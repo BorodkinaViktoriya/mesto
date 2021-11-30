@@ -41,7 +41,7 @@
   <div class="popup popup_contain_profile">
     <div class="popup__container">
       <form class="popup__form" name="profileForm">
-        <fieldset class="popup__contact-info">
+        <fieldset class="popup__fieldset">
           <legend class="popup__title">Редактировать профиль</legend>
           <input
             type="text"
@@ -62,7 +62,7 @@
   <div class="popup popup_contain_places">
     <div class="popup__container">
       <form class="popup__form" name="placeForm">
-        <fieldset class="popup__contact-info">
+        <fieldset class="popup__fieldset">
           <legend class="popup__title">Новое место</legend>
           <input
             type="text"
@@ -80,6 +80,18 @@
       </form>
     </div>
   </div>
+  <div class="popup popup_contain_image">
+    <div class="popup__container popup__container_contain_picture">
+      <img
+        class="popup__image"
+        src="#"
+        alt=""
+      />
+      <h2 class="popup__caption"></h2>
+      <button class="popup__close-button" type="button"></button>
+    </div>
+  </div>
+</div>
 </div>
 <template class="template">
   <figure class="place">
