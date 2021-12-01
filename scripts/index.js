@@ -55,6 +55,7 @@ function handleZoom(event) {
 
   imageInPopup.src = targetImage.src;
   titleInPopup.textContent = captionInPlace.textContent;
+  imageInPopup.alt = targetImage.alt;
 }
 
 function handleDelete(event) {
