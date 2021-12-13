@@ -47,29 +47,6 @@ const titleInPopup = popupZoomImages.querySelector('.popup__caption');
 const zoomImagesCloseButton = popupZoomImages.querySelector('.popup__close-button');
 const popupOverlays = document.querySelectorAll('.popup__overlay');
 
-function handleZoom(event) {
-  openPopup(popupZoomImages)
-
-  const targetImage = event.target;
-  const placeWithImage = targetImage.closest('.place');
-  const captionInPlace = placeWithImage.querySelector('.place__title');
-
-  imageInPopup.src = targetImage.src;
-  titleInPopup.textContent = captionInPlace.textContent;
-  imageInPopup.alt = targetImage.alt;
-
-}
-
-function handleDelete(event) {
-  const targetEl = event.target;
-  const deletedEL = targetEl.closest('.place');
-  deletedEL.remove();
-}
-
-function handleLike(event) {
-  const targetLike = event.target;
-  targetLike.classList.toggle('place__like-button_active');
-}
 
 // функция создания карточки
 function getItem(item) {
@@ -77,15 +54,10 @@ function getItem(item) {
   const placeTitle = newItem.querySelector('.place__title');
   const placeImage = newItem.querySelector('.place__image');
   const removeButton = newItem.querySelector('.place__remove-button');
-  const likeButton = newItem.querySelector('.place__like-button');
 
   placeTitle.textContent = item.name;
   placeImage.src = item.link;
   placeImage.alt = item.name;
-
-  removeButton.addEventListener('click', handleDelete);
-  placeImage.addEventListener('click', handleZoom);
-  likeButton.addEventListener('click', handleLike);
 
   return newItem;
 }
@@ -98,12 +70,21 @@ function render() {
   placesContainer.append(...places);
 }
 
+function handleEscButton(evt){
+  if(evt.keyCode == 27) {
+    closePopup(document.querySelector('.popup_opened'));
+  }
+}
+
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener ('keydown', handleEscButton);
 }
+
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', handleEscButton);
 }
 
 // функция открытия попапа с формой профиля
@@ -111,7 +92,6 @@ function handleProfileForm() {
   openPopup(popupProfile);
   nameInput.value = nameProfile.textContent;
   jobInput.value = jobProfile.textContent;
-
 }
 
 // функция сщхранения профиля
@@ -127,19 +107,42 @@ function handleplaceSubmit(evt) {
   evt.preventDefault();
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
-  if (placeNameInput.value === "" && placeLinkInput.value === "") {
-    closePopup(popupPlaces);
-  } else {
-    const placeItem = getItem({name: placeName, link: placeLink});
-    placesContainer.prepend(placeItem);
-    closePopup(popupPlaces);
-    placeNameInput.value = '';
-    placeLinkInput.value = '';
+  const placeItem = getItem({name: placeName, link: placeLink});
+  placesContainer.prepend(placeItem);
+  closePopup(popupPlaces);
+  placeNameInput.value = '';
+  placeLinkInput.value = '';
+}
+
+function handleZoom(evt) {
+  if(evt.target.classList.contains('place__image')) {
+    openPopup(popupZoomImages)
+
+    const targetImage = evt.target;
+    const placeWithImage = targetImage.closest('.place');
+    const captionInPlace = placeWithImage.querySelector('.place__title');
+
+    imageInPopup.src = targetImage.src;
+    titleInPopup.textContent = captionInPlace.textContent;
+    imageInPopup.alt = targetImage.alt;
   }
 }
 
-popupOverlays.forEach((elem)=>{
-  elem.addEventListener('click',()=>{
+function handleDelete(evt) {
+  if (evt.target.classList.contains('place__remove-button')) {
+    const deletedEL = evt.target.closest('.place');
+    deletedEL.remove();
+  }
+}
+//функция лайка карточки
+function handleLike(evt) {
+  if (evt.target.classList.contains('place__like-button')) {
+    evt.target.classList.toggle('place__like-button_active');
+  }
+}
+
+popupOverlays.forEach((elem) => {
+  elem.addEventListener('click', () => {
     closePopup(elem.closest('.popup'));
   });
 })
@@ -151,5 +154,8 @@ profileForm.addEventListener('submit', handleProfileSubmit);
 placeForm.addEventListener('submit', handleplaceSubmit);
 placesCloseButton.addEventListener('click', () => closePopup(popupPlaces));
 zoomImagesCloseButton.addEventListener('click', () => closePopup(popupZoomImages));
+placesContainer.addEventListener('click', handleLike);
+placesContainer.addEventListener('click', handleDelete);
+placesContainer.addEventListener('click', handleZoom);
 
 render();
