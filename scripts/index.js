@@ -45,6 +45,7 @@ const popupZoomImages = document.querySelector('.popup_contain_image');
 const imageInPopup = popupZoomImages.querySelector('.popup__image');
 const titleInPopup = popupZoomImages.querySelector('.popup__caption');
 const zoomImagesCloseButton = popupZoomImages.querySelector('.popup__close-button');
+const popupOverlays = document.querySelectorAll('.popup__overlay');
 
 function handleZoom(event) {
   openPopup(popupZoomImages)
@@ -56,6 +57,7 @@ function handleZoom(event) {
   imageInPopup.src = targetImage.src;
   titleInPopup.textContent = captionInPlace.textContent;
   imageInPopup.alt = targetImage.alt;
+
 }
 
 function handleDelete(event) {
@@ -109,6 +111,7 @@ function handleProfileForm() {
   openPopup(popupProfile);
   nameInput.value = nameProfile.textContent;
   jobInput.value = jobProfile.textContent;
+
 }
 
 // функция сщхранения профиля
@@ -134,6 +137,12 @@ function handleplaceSubmit(evt) {
     placeLinkInput.value = '';
   }
 }
+
+popupOverlays.forEach((elem)=>{
+  elem.addEventListener('click',()=>{
+    closePopup(elem.closest('.popup'));
+  });
+})
 
 editButton.addEventListener('click', handleProfileForm);
 addButton.addEventListener('click', () => openPopup(popupPlaces));

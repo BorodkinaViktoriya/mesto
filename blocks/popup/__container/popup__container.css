@@ -8,6 +8,7 @@
   padding: 34px 36px 37px;
   position: relative;
   font-size: 0;
+  z-index: 5;
 }
 
 @media screen and (max-width: 690px) {
