@@ -45,18 +45,20 @@
         <fieldset class="popup__fieldset">
           <legend class="popup__title">Редактировать профиль</legend>
           <input
-            type="text"
-            class="popup__input popup__input_value_name"
-            name="name" placeholder="Ваше имя"
+            type="text" id="user-name"
+            class="popup__input popup__input_type_name"
+            name="name" placeholder="Ваше имя" required minlength="2" maxlength="40"
           />
+          <span id="user-name-error" class="popup__error"></span>
           <input
-            type="text"
-            class="popup__input popup__input_value_job"
-            name="job" placeholder="Род занятий"
+            type="text" id="user-job"
+            class="popup__input popup__input_type_job popup__input_type_error "
+            name="job" placeholder="Род занятий" required minlength="2" maxlength="200"
           />
+          <span id="user-job-error" class="popup__error">jhbvtyhkhe h9reuwnhgmhgjmhgmhgmhgm</span>
         </fieldset>
         <button class="popup__close-button" type="button"></button>
-        <button class="popup__submit" type="submit">Cохранить</button>
+        <button class="popup__button popup__button_disabled" type="submit">Cохранить</button>
       </form>
     </div>
   </div>
@@ -67,18 +69,20 @@
         <fieldset class="popup__fieldset">
           <legend class="popup__title">Новое место</legend>
           <input
-            type="text"
-            class="popup__input popup__input_value_place-name"
-            name="place-name" placeholder="Название"
+            type="text" id="place-name"
+            class="popup__input popup__input_type_place-name"
+            name="place-name" placeholder="Название" required minlength="2" maxlength="30"
           />
+          <span id="place-name-error" class="popup__error"></span>
           <input
-            type="text"
-            class="popup__input popup__input_value_place-link"
-            name="place-link" placeholder="Ссылка на картинку"
+            type="url" id="place-link"
+            class="popup__input popup__input_type_place-link"
+            name="place-link" placeholder="Ссылка на картинку" required
           />
+          <span id="place-link-error" class="popup__error"></span>
         </fieldset>
         <button class="popup__close-button" type="button"></button>
-        <button class="popup__submit" type="submit">Cохранить</button>
+        <button class="popup__button" type="submit">Cоздать</button>
       </form>
     </div>
   </div>
