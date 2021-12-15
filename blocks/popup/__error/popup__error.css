@@ -7,7 +7,9 @@
   color: #F00;
   overflow: hidden;
   min-height: 14px;
+  visibility: hidden;
 }
+
 @media screen and (max-width: 690px) {
   .popup__error {
     max-width: 238px;

@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="./pages/index.css"/>
   <script src="./scripts/index.js" defer></script>
+  <script src="./scripts/validate.js" defer></script>
 </head>
 <body>
 <div class="page">
@@ -41,7 +42,7 @@
   <div class="popup popup_contain_profile">
     <div class="popup__overlay"></div>
     <div class="popup__container">
-      <form class="popup__form" name="profileForm">
+      <form class="popup__form" name="profileForm" novalidate>
         <fieldset class="popup__fieldset">
           <legend class="popup__title">Редактировать профиль</legend>
           <input
@@ -52,20 +53,20 @@
           <span id="user-name-error" class="popup__error"></span>
           <input
             type="text" id="user-job"
-            class="popup__input popup__input_type_job popup__input_type_error "
+            class="popup__input popup__input_type_job"
             name="job" placeholder="Род занятий" required minlength="2" maxlength="200"
           />
-          <span id="user-job-error" class="popup__error">jhbvtyhkhe h9reuwnhgmhgjmhgmhgmhgm</span>
+          <span id="user-job-error" class="popup__error"></span>
         </fieldset>
         <button class="popup__close-button" type="button"></button>
-        <button class="popup__button popup__button_disabled" type="submit">Cохранить</button>
+        <button class="popup__button" type="submit">Cохранить</button>
       </form>
     </div>
   </div>
   <div class="popup popup_contain_places">
     <div class="popup__overlay"></div>
     <div class="popup__container">
-      <form class="popup__form" name="placeForm">
+      <form class="popup__form" name="placeForm" novalidate>
         <fieldset class="popup__fieldset">
           <legend class="popup__title">Новое место</legend>
           <input

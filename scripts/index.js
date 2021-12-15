@@ -47,7 +47,6 @@ const titleInPopup = popupZoomImages.querySelector('.popup__caption');
 const zoomImagesCloseButton = popupZoomImages.querySelector('.popup__close-button');
 const popupOverlays = document.querySelectorAll('.popup__overlay');
 
-
 // функция создания карточки
 function getItem(item) {
   const newItem = templateEl.content.cloneNode(true);
@@ -70,17 +69,16 @@ function render() {
   placesContainer.append(...places);
 }
 
-function handleEscButton(evt){
-  if(evt.keyCode == 27) {
+function handleEscButton(evt) {
+  if (evt.keyCode == 27) {
     closePopup(document.querySelector('.popup_opened'));
   }
 }
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  document.addEventListener ('keydown', handleEscButton);
+  document.addEventListener('keydown', handleEscButton);
 }
-
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
@@ -94,7 +92,15 @@ function handleProfileForm() {
   jobInput.value = jobProfile.textContent;
 }
 
-// функция сщхранения профиля
+//функция открытия формы добавления места
+function handleOpenAddForm() {
+  openPopup(popupPlaces);
+  const submitPlaceButton = popupPlaces.querySelector('.popup__button');
+  submitPlaceButton.disabled = true;
+  submitPlaceButton.classList.add('popup__button_disabled');
+}
+
+// функция сохранения профиля
 function handleProfileSubmit(evt) {
   evt.preventDefault();
   nameProfile.textContent = nameInput.value;
@@ -103,7 +109,7 @@ function handleProfileSubmit(evt) {
 }
 
 // функция сохранения фотографии места
-function handleplaceSubmit(evt) {
+function handlePlaceSubmit(evt) {
   evt.preventDefault();
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
@@ -114,8 +120,9 @@ function handleplaceSubmit(evt) {
   placeLinkInput.value = '';
 }
 
+// функция открытия попапа с увеличенной карточкой места
 function handleZoom(evt) {
-  if(evt.target.classList.contains('place__image')) {
+  if (evt.target.classList.contains('place__image')) {
     openPopup(popupZoomImages)
 
     const targetImage = evt.target;
@@ -134,6 +141,7 @@ function handleDelete(evt) {
     deletedEL.remove();
   }
 }
+
 //функция лайка карточки
 function handleLike(evt) {
   if (evt.target.classList.contains('place__like-button')) {
@@ -148,10 +156,10 @@ popupOverlays.forEach((elem) => {
 })
 
 editButton.addEventListener('click', handleProfileForm);
-addButton.addEventListener('click', () => openPopup(popupPlaces));
+addButton.addEventListener('click', handleOpenAddForm);
 popupProfileClose.addEventListener('click', () => closePopup(popupProfile));
 profileForm.addEventListener('submit', handleProfileSubmit);
-placeForm.addEventListener('submit', handleplaceSubmit);
+placeForm.addEventListener('submit', handlePlaceSubmit);
 placesCloseButton.addEventListener('click', () => closePopup(popupPlaces));
 zoomImagesCloseButton.addEventListener('click', () => closePopup(popupZoomImages));
 placesContainer.addEventListener('click', handleLike);
