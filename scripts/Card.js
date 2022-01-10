@@ -1,8 +1,8 @@
-const popupZoomCards = document.querySelector('.popup_contain_image');
+export const popupZoomCards = document.querySelector('.popup_contain_image');
 const popupCard = popupZoomCards.querySelector('.popup__image');
 const popupCardDescription = popupZoomCards.querySelector('.popup__caption');
 
-export default class Card {
+export class Card {
   constructor(name, link, cardSelector, openPopup) {
     this._name = name;
     this._link = link;
@@ -20,7 +20,7 @@ export default class Card {
     return cardElement;
   }
 
-_handleDeleteCard = () => {
+  _handleDeleteCard = () => {
     this._element.remove();
   }
 
@@ -28,9 +28,8 @@ _handleDeleteCard = () => {
     this._element.querySelector('.place__like-button').classList.toggle('place__like-button_active');
   }
 
-
   _handleImageClick = () => {
-    openPopup(popupZoomCards);
+    this._openPopup(popupZoomCards);
     popupCard.src = this._link;
     popupCardDescription.textContent = this._name;
     popupCard.alt = this._name;
@@ -51,5 +50,5 @@ _handleDeleteCard = () => {
     this._element.querySelector('.place__image').alt = this._name;
 
     return this._element;
-  }
+  };
 }

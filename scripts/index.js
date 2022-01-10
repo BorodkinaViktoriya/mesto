@@ -1,4 +1,5 @@
-import Card from './Card.js';
+import {popupZoomCards, Card} from './Card.js';
+import FormValidator from './FormValidator.js';
 
 const initialPlaces = [
   {
@@ -27,12 +28,6 @@ const initialPlaces = [
   }
 ];
 
-initialPlaces.forEach((item) => {
-  const card = new Card(item.name, item.link, '.place-template', openPopup(popupZoomImages));
-  const cardElement = card.generateCard();
-  document.querySelector('.places').append(cardElement);
-});
-
 const editButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_contain_profile');
 const popupProfileClose = popupProfile.querySelector('.popup__close-button');
@@ -47,11 +42,20 @@ const placeForm = popupPlaces.querySelector('[name="placeForm"]');
 const placesCloseButton = popupPlaces.querySelector('.popup__close-button');
 const placeNameInput = popupPlaces.querySelector('.popup__input_type_place-name');
 const placeLinkInput = popupPlaces.querySelector('.popup__input_type_place-link');
-const popupZoomImages = document.querySelector('.popup_contain_image');
-const imageInPopup = popupZoomImages.querySelector('.popup__image');
-const titleInPopup = popupZoomImages.querySelector('.popup__caption');
-const zoomImagesCloseButton = popupZoomImages.querySelector('.popup__close-button');
+const popupCardsCloseButton = popupZoomCards.querySelector('.popup__close-button');
 const popupOverlays = document.querySelectorAll('.popup__overlay');
+
+const editFormValidator = new FormValidator(validationConfig, editFormModalWindow);
+const placeFormValidator = new FormValidator(validationConfig, cardFormModalWindow);
+
+editFormValidator.enableValidation();
+placeFormValidator.enableValidation();
+
+initialPlaces.forEach((item) => {
+  const card = new Card(item.name, item.link, '.place-template', openPopup);
+  const cardElement = card.generateCard();
+  document.querySelector('.places').append(cardElement);
+});
 
 function handleEscButton(evt) {
   if (evt.keyCode == 27) {
@@ -98,7 +102,7 @@ function handlePlaceSubmit(evt) {
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
 
-  const card = new Card(placeName, placeLink, '.place-template', openPopup();
+  const card = new Card(placeName, placeLink, '.place-template', openPopup);
   const cardElement = card.generateCard();
   document.querySelector('.places').prepend(cardElement);
   closePopup(popupPlaces);
@@ -118,4 +122,4 @@ popupProfileClose.addEventListener('click', () => closePopup(popupProfile));
 profileForm.addEventListener('submit', handleProfileSubmit);
 placeForm.addEventListener('submit', handlePlaceSubmit);
 placesCloseButton.addEventListener('click', () => closePopup(popupPlaces));
-zoomImagesCloseButton.addEventListener('click', () => closePopup(popupZoomImages));
+popupCardsCloseButton.addEventListener('click', () => closePopup(popupZoomCards));
