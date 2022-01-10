@@ -1,3 +1,5 @@
+import Card from './Card.js';
+
 const initialPlaces = [
   {
     name: 'Архыз',
@@ -25,8 +27,12 @@ const initialPlaces = [
   }
 ];
 
-const placesContainer = document.querySelector('.places')
-const templateEl = document.querySelector('template')
+initialPlaces.forEach((item) => {
+  const card = new Card(item.name, item.link, '.place-template', openPopup(popupZoomImages));
+  const cardElement = card.generateCard();
+  document.querySelector('.places').append(cardElement);
+});
+
 const editButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_contain_profile');
 const popupProfileClose = popupProfile.querySelector('.popup__close-button');
@@ -46,28 +52,6 @@ const imageInPopup = popupZoomImages.querySelector('.popup__image');
 const titleInPopup = popupZoomImages.querySelector('.popup__caption');
 const zoomImagesCloseButton = popupZoomImages.querySelector('.popup__close-button');
 const popupOverlays = document.querySelectorAll('.popup__overlay');
-
-// функция создания карточки
-function getItem(item) {
-  const newItem = templateEl.content.cloneNode(true);
-  const placeTitle = newItem.querySelector('.place__title');
-  const placeImage = newItem.querySelector('.place__image');
-  const removeButton = newItem.querySelector('.place__remove-button');
-
-  placeTitle.textContent = item.name;
-  placeImage.src = item.link;
-  placeImage.alt = item.name;
-
-  return newItem;
-}
-
-// функция добавления 6 катрочек 'Из коробки'
-function render() {
-  const places = initialPlaces.map((item) => {
-    return getItem(item);
-  });
-  placesContainer.append(...places);
-}
 
 function handleEscButton(evt) {
   if (evt.keyCode == 27) {
@@ -113,40 +97,13 @@ function handlePlaceSubmit(evt) {
   evt.preventDefault();
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
-  const placeItem = getItem({name: placeName, link: placeLink});
-  placesContainer.prepend(placeItem);
+
+  const card = new Card(placeName, placeLink, '.place-template', openPopup();
+  const cardElement = card.generateCard();
+  document.querySelector('.places').prepend(cardElement);
   closePopup(popupPlaces);
   placeNameInput.value = '';
   placeLinkInput.value = '';
-}
-
-// функция открытия попапа с увеличенной карточкой места
-function handleZoom(evt) {
-  if (evt.target.classList.contains('place__image')) {
-    openPopup(popupZoomImages)
-
-    const targetImage = evt.target;
-    const placeWithImage = targetImage.closest('.place');
-    const captionInPlace = placeWithImage.querySelector('.place__title');
-
-    imageInPopup.src = targetImage.src;
-    titleInPopup.textContent = captionInPlace.textContent;
-    imageInPopup.alt = targetImage.alt;
-  }
-}
-
-function handleDelete(evt) {
-  if (evt.target.classList.contains('place__remove-button')) {
-    const deletedEL = evt.target.closest('.place');
-    deletedEL.remove();
-  }
-}
-
-//функция лайка карточки
-function handleLike(evt) {
-  if (evt.target.classList.contains('place__like-button')) {
-    evt.target.classList.toggle('place__like-button_active');
-  }
 }
 
 popupOverlays.forEach((elem) => {
@@ -162,8 +119,3 @@ profileForm.addEventListener('submit', handleProfileSubmit);
 placeForm.addEventListener('submit', handlePlaceSubmit);
 placesCloseButton.addEventListener('click', () => closePopup(popupPlaces));
 zoomImagesCloseButton.addEventListener('click', () => closePopup(popupZoomImages));
-placesContainer.addEventListener('click', handleLike);
-placesContainer.addEventListener('click', handleDelete);
-placesContainer.addEventListener('click', handleZoom);
-
-render();
