@@ -1,4 +1,4 @@
-import {popupZoomCards, Card} from './Card.js';
+import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
 const initialPlaces = [
@@ -42,17 +42,26 @@ const placeForm = popupPlaces.querySelector('[name="placeForm"]');
 const placesCloseButton = popupPlaces.querySelector('.popup__close-button');
 const placeNameInput = popupPlaces.querySelector('.popup__input_type_place-name');
 const placeLinkInput = popupPlaces.querySelector('.popup__input_type_place-link');
-const popupCardsCloseButton = popupZoomCards.querySelector('.popup__close-button');
+const popupZoomImages = document.querySelector('.popup_contain_image');
+const imageInPopup = popupZoomImages.querySelector('.popup__image');
+const titleInPopup = popupZoomImages.querySelector('.popup__caption');
+const zoomImagesCloseButton = popupZoomImages.querySelector('.popup__close-button');
 const popupOverlays = document.querySelectorAll('.popup__overlay');
 
-const editFormValidator = new FormValidator(validationConfig, editFormModalWindow);
-const placeFormValidator = new FormValidator(validationConfig, cardFormModalWindow);
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}
 
-editFormValidator.enableValidation();
-placeFormValidator.enableValidation();
+const profileFormValidator = new FormValidator(validationConfig, profileForm);
+const placeFormValidator = new FormValidator(validationConfig, placeForm);
 
 initialPlaces.forEach((item) => {
-  const card = new Card(item.name, item.link, '.place-template', openPopup);
+  const card = new Card(item.name, item.link, '.place-template', handleZoomPopup);
   const cardElement = card.generateCard();
   document.querySelector('.places').append(cardElement);
 });
@@ -73,11 +82,23 @@ function closePopup(popup) {
   document.removeEventListener('keydown', handleEscButton);
 }
 
+// функция обнуления спанов формы
+function handleSpan(form) {
+  const spanList = form.querySelectorAll('.popup__error');
+  spanList.forEach(span => span.textContent = "");
+}
+
 // функция открытия попапа с формой профиля
 function handleProfileForm() {
   openPopup(popupProfile);
   nameInput.value = nameProfile.textContent;
   jobInput.value = jobProfile.textContent;
+  handleSpan(profileForm);
+  nameInput.classList.remove('popup__input_type_error');
+  jobInput.classList.remove('popup__input_type_error');
+  const submitProfileButton = profileForm.querySelector('.popup__button');
+  submitProfileButton.disabled = false;
+  submitProfileButton.classList.remove('popup__button_disabled');
 }
 
 //функция открытия формы добавления места
@@ -86,6 +107,10 @@ function handleOpenAddForm() {
   const submitPlaceButton = popupPlaces.querySelector('.popup__button');
   submitPlaceButton.disabled = true;
   submitPlaceButton.classList.add('popup__button_disabled');
+  placeNameInput.classList.remove('popup__input_type_error');
+  placeLinkInput.classList.remove('popup__input_type_error');
+  placeForm.reset();
+  handleSpan(placeForm);
 }
 
 // функция сохранения профиля
@@ -94,6 +119,7 @@ function handleProfileSubmit(evt) {
   nameProfile.textContent = nameInput.value;
   jobProfile.textContent = jobInput.value;
   closePopup(popupProfile);
+
 }
 
 // функция сохранения фотографии места
@@ -102,12 +128,20 @@ function handlePlaceSubmit(evt) {
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
 
-  const card = new Card(placeName, placeLink, '.place-template', openPopup);
+  const card = new Card(placeName, placeLink, '.place-template', handleZoomPopup);
   const cardElement = card.generateCard();
   document.querySelector('.places').prepend(cardElement);
   closePopup(popupPlaces);
   placeNameInput.value = '';
   placeLinkInput.value = '';
+}
+
+// функция открытия попапа с увеличенной карточкой места
+function handleZoomPopup(name, link) {
+  openPopup(popupZoomImages);
+  imageInPopup.src = link;
+  titleInPopup.textContent = name;
+  imageInPopup.alt = name;
 }
 
 popupOverlays.forEach((elem) => {
@@ -116,10 +150,13 @@ popupOverlays.forEach((elem) => {
   });
 })
 
+profileFormValidator.enableValidation();
+placeFormValidator.enableValidation();
+
 editButton.addEventListener('click', handleProfileForm);
 addButton.addEventListener('click', handleOpenAddForm);
 popupProfileClose.addEventListener('click', () => closePopup(popupProfile));
 profileForm.addEventListener('submit', handleProfileSubmit);
 placeForm.addEventListener('submit', handlePlaceSubmit);
 placesCloseButton.addEventListener('click', () => closePopup(popupPlaces));
-popupCardsCloseButton.addEventListener('click', () => closePopup(popupZoomCards));
+zoomImagesCloseButton.addEventListener('click', () => closePopup(popupZoomImages));

@@ -1,13 +1,9 @@
-export const popupZoomCards = document.querySelector('.popup_contain_image');
-const popupCard = popupZoomCards.querySelector('.popup__image');
-const popupCardDescription = popupZoomCards.querySelector('.popup__caption');
-
-export class Card {
-  constructor(name, link, cardSelector, openPopup) {
+export default class Card {
+  constructor(name, link, cardSelector, handlePopup) {
     this._name = name;
     this._link = link;
     this._cardSelector = cardSelector;
-    this._openPopup = openPopup;
+    this._handlePopup = handlePopup;
   }
 
   _getTemplate() {
@@ -28,17 +24,10 @@ export class Card {
     this._element.querySelector('.place__like-button').classList.toggle('place__like-button_active');
   }
 
-  _handleImageClick = () => {
-    this._openPopup(popupZoomCards);
-    popupCard.src = this._link;
-    popupCardDescription.textContent = this._name;
-    popupCard.alt = this._name;
-  }
-
   _setEventListeners() {
     this._element.querySelector('.place__remove-button').addEventListener('click', this._handleDeleteCard);
     this._element.querySelector('.place__like-button').addEventListener('click', this._handleLikeCard);
-    this._element.querySelector('.place__image').addEventListener('click', this._handleImageClick);
+    this._element.querySelector('.place__image').addEventListener('click', () => this._handlePopup(this._name, this._link));
   }
 
   generateCard() {
