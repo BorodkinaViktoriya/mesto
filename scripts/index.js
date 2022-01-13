@@ -39,6 +39,7 @@ const jobInput = popupProfile.querySelector('.popup__input_type_job');
 const addButton = document.querySelector('.lead__add-button');
 const popupPlaces = document.querySelector('.popup_contain_places');
 const placeForm = popupPlaces.querySelector('[name="placeForm"]');
+const placeContainer = document.querySelector('.places');
 const placesCloseButton = popupPlaces.querySelector('.popup__close-button');
 const placeNameInput = popupPlaces.querySelector('.popup__input_type_place-name');
 const placeLinkInput = popupPlaces.querySelector('.popup__input_type_place-link');
@@ -60,14 +61,19 @@ const validationConfig = {
 const profileFormValidator = new FormValidator(validationConfig, profileForm);
 const placeFormValidator = new FormValidator(validationConfig, placeForm);
 
+
+function createCard(name, link) {
+  const card = new Card(name, link, '.place-template', handleZoomPopup);
+  return card.generateCard();
+}
+
 initialPlaces.forEach((item) => {
-  const card = new Card(item.name, item.link, '.place-template', handleZoomPopup);
-  const cardElement = card.generateCard();
-  document.querySelector('.places').append(cardElement);
+  const cardItem = createCard(item.name, item.link,)
+  placeContainer.append(cardItem);
 });
 
 function handleEscButton(evt) {
-  if (evt.keyCode == 27) {
+  if (evt.key === "Escape") {
     closePopup(document.querySelector('.popup_opened'));
   }
 }
@@ -82,35 +88,19 @@ function closePopup(popup) {
   document.removeEventListener('keydown', handleEscButton);
 }
 
-// функция обнуления спанов формы
-function handleSpan(form) {
-  const spanList = form.querySelectorAll('.popup__error');
-  spanList.forEach(span => span.textContent = "");
-}
-
 // функция открытия попапа с формой профиля
 function handleProfileForm() {
   openPopup(popupProfile);
   nameInput.value = nameProfile.textContent;
   jobInput.value = jobProfile.textContent;
-  handleSpan(profileForm);
-  nameInput.classList.remove('popup__input_type_error');
-  jobInput.classList.remove('popup__input_type_error');
-  const submitProfileButton = profileForm.querySelector('.popup__button');
-  submitProfileButton.disabled = false;
-  submitProfileButton.classList.remove('popup__button_disabled');
+  profileFormValidator.resetValidation();
 }
 
 //функция открытия формы добавления места
-function handleOpenAddForm() {
+function handleOpenAddForm(item) {
   openPopup(popupPlaces);
-  const submitPlaceButton = popupPlaces.querySelector('.popup__button');
-  submitPlaceButton.disabled = true;
-  submitPlaceButton.classList.add('popup__button_disabled');
-  placeNameInput.classList.remove('popup__input_type_error');
-  placeLinkInput.classList.remove('popup__input_type_error');
   placeForm.reset();
-  handleSpan(placeForm);
+  placeFormValidator.resetValidation();
 }
 
 // функция сохранения профиля
@@ -119,18 +109,17 @@ function handleProfileSubmit(evt) {
   nameProfile.textContent = nameInput.value;
   jobProfile.textContent = jobInput.value;
   closePopup(popupProfile);
-
 }
 
 // функция сохранения фотографии места
 function handlePlaceSubmit(evt) {
   evt.preventDefault();
+
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
 
-  const card = new Card(placeName, placeLink, '.place-template', handleZoomPopup);
-  const cardElement = card.generateCard();
-  document.querySelector('.places').prepend(cardElement);
+  const card = createCard(placeName, placeLink)
+  placeContainer.prepend(card);
   closePopup(popupPlaces);
   placeNameInput.value = '';
   placeLinkInput.value = '';
