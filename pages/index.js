@@ -1,5 +1,7 @@
-import Card from './Card.js';
-import FormValidator from './FormValidator.js';
+import Card from '../components/Card.js';
+import FormValidator from '../components/FormValidator.js';
+import Section from "../components/Section.js";
+//import PopupWithImage  from "../components/PopupWithImage.js";
 
 const initialPlaces = [
   {
@@ -39,13 +41,12 @@ const jobInput = popupProfile.querySelector('.popup__input_type_job');
 const addButton = document.querySelector('.lead__add-button');
 const popupPlaces = document.querySelector('.popup_contain_places');
 const placeForm = popupPlaces.querySelector('[name="placeForm"]');
-const placeContainer = document.querySelector('.places');
 const placesCloseButton = popupPlaces.querySelector('.popup__close-button');
 const placeNameInput = popupPlaces.querySelector('.popup__input_type_place-name');
 const placeLinkInput = popupPlaces.querySelector('.popup__input_type_place-link');
 const popupZoomImages = document.querySelector('.popup_contain_image');
-const imageInPopup = popupZoomImages.querySelector('.popup__image');
-const titleInPopup = popupZoomImages.querySelector('.popup__caption');
+//const imageInPopup = popupZoomImages.querySelector('.popup__image');
+//const titleInPopup = popupZoomImages.querySelector('.popup__caption');
 const zoomImagesCloseButton = popupZoomImages.querySelector('.popup__close-button');
 const popupOverlays = document.querySelectorAll('.popup__overlay');
 
@@ -62,15 +63,22 @@ const profileFormValidator = new FormValidator(validationConfig, profileForm);
 const placeFormValidator = new FormValidator(validationConfig, placeForm);
 
 
-function createCard(name, link) {
-  const card = new Card(name, link, '.place-template', handleZoomPopup);
-  return card.generateCard();
-}
 
-initialPlaces.forEach((item) => {
-  const cardItem = createCard(item.name, item.link,)
-  placeContainer.append(cardItem);
-});
+
+
+const cardList = new Section({
+    items: initialPlaces,
+    renderer: (item) => {
+      const card = new Card(item.name, item.link, '.place-template', handleCardClick )
+      const cardElement = card.generateCard();
+
+      cardList.addItem(cardElement);
+    },
+  },
+  '.places'
+);
+
+cardList.renderItems();
 
 function handleEscButton(evt) {
   if (evt.key === "Escape") {
@@ -117,16 +125,17 @@ function handlePlaceSubmit(evt) {
 
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
+  const card = new Card(placeName,placeLink, '.place-template', handleCardClick);
+  const cardElement = card.generateCard();
 
-  const card = createCard(placeName, placeLink)
-  placeContainer.prepend(card);
+  cardList.addItem(cardElement);
   closePopup(popupPlaces);
   placeNameInput.value = '';
   placeLinkInput.value = '';
 }
 
 // функция открытия попапа с увеличенной карточкой места
-function handleZoomPopup(name, link) {
+function handleCardClick(name, link) {
   openPopup(popupZoomImages);
   imageInPopup.src = link;
   titleInPopup.textContent = name;
