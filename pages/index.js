@@ -1,7 +1,7 @@
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import Section from "../components/Section.js";
-//import PopupWithImage  from "../components/PopupWithImage.js";
+import PopupWithImage  from "../components/PopupWithImage.js";
 
 const initialPlaces = [
   {
@@ -44,11 +44,7 @@ const placeForm = popupPlaces.querySelector('[name="placeForm"]');
 const placesCloseButton = popupPlaces.querySelector('.popup__close-button');
 const placeNameInput = popupPlaces.querySelector('.popup__input_type_place-name');
 const placeLinkInput = popupPlaces.querySelector('.popup__input_type_place-link');
-const popupZoomImages = document.querySelector('.popup_contain_image');
-//const imageInPopup = popupZoomImages.querySelector('.popup__image');
-//const titleInPopup = popupZoomImages.querySelector('.popup__caption');
-const zoomImagesCloseButton = popupZoomImages.querySelector('.popup__close-button');
-const popupOverlays = document.querySelectorAll('.popup__overlay');
+//const popupOverlays = document.querySelectorAll('.popup__overlay');
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -63,13 +59,14 @@ const profileFormValidator = new FormValidator(validationConfig, profileForm);
 const placeFormValidator = new FormValidator(validationConfig, placeForm);
 
 
+const popupWithImage = new PopupWithImage('.popup_contain_image');
+popupWithImage.setEventListeners();
 
-
-
+// Создаем класс секции для добавления карточек
 const cardList = new Section({
     items: initialPlaces,
     renderer: (item) => {
-      const card = new Card(item.name, item.link, '.place-template', handleCardClick )
+      const card = new Card(item.name, item.link, '.place-template',() => popupWithImage.open(item.name, item.link) )
       const cardElement = card.generateCard();
 
       cardList.addItem(cardElement);
@@ -80,20 +77,23 @@ const cardList = new Section({
 
 cardList.renderItems();
 
-function handleEscButton(evt) {
+
+
+
+/*function handleEscButton(evt) {
   if (evt.key === "Escape") {
     closePopup(document.querySelector('.popup_opened'));
   }
 }
 
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', handleEscButton);
-}
 
+*/
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', handleEscButton);
+}
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
 }
 
 // функция открытия попапа с формой профиля
@@ -125,7 +125,7 @@ function handlePlaceSubmit(evt) {
 
   const placeName = placeNameInput.value;
   const placeLink = placeLinkInput.value;
-  const card = new Card(placeName,placeLink, '.place-template', handleCardClick);
+  const card = new Card(placeName,placeLink, '.place-template', () => popupWithImage.open(placeName, placeLink));
   const cardElement = card.generateCard();
 
   cardList.addItem(cardElement);
@@ -134,19 +134,14 @@ function handlePlaceSubmit(evt) {
   placeLinkInput.value = '';
 }
 
-// функция открытия попапа с увеличенной карточкой места
-function handleCardClick(name, link) {
-  openPopup(popupZoomImages);
-  imageInPopup.src = link;
-  titleInPopup.textContent = name;
-  imageInPopup.alt = name;
-}
+/*
 
 popupOverlays.forEach((elem) => {
   elem.addEventListener('click', () => {
     closePopup(elem.closest('.popup'));
   });
 })
+*/
 
 profileFormValidator.enableValidation();
 placeFormValidator.enableValidation();
@@ -157,4 +152,3 @@ popupProfileClose.addEventListener('click', () => closePopup(popupProfile));
 profileForm.addEventListener('submit', handleProfileSubmit);
 placeForm.addEventListener('submit', handlePlaceSubmit);
 placesCloseButton.addEventListener('click', () => closePopup(popupPlaces));
-zoomImagesCloseButton.addEventListener('click', () => closePopup(popupZoomImages));
