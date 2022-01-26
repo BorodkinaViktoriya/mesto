@@ -2,6 +2,7 @@ import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import Section from "../components/Section.js";
 import PopupWithImage  from "../components/PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
 
 const initialPlaces = [
   {
@@ -33,8 +34,8 @@ const initialPlaces = [
 const editButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_contain_profile');
 const popupProfileClose = popupProfile.querySelector('.popup__close-button');
-const nameProfile = document.querySelector('.profile__name');
-const jobProfile = document.querySelector('.profile__job');
+//const nameProfile = document.querySelector('.profile__name');
+//const jobProfile = document.querySelector('.profile__job');
 const profileForm = popupProfile.querySelector('[name="profileForm"]');
 const nameInput = popupProfile.querySelector('.popup__input_type_name');
 const jobInput = popupProfile.querySelector('.popup__input_type_job');
@@ -44,7 +45,6 @@ const placeForm = popupPlaces.querySelector('[name="placeForm"]');
 const placesCloseButton = popupPlaces.querySelector('.popup__close-button');
 const placeNameInput = popupPlaces.querySelector('.popup__input_type_place-name');
 const placeLinkInput = popupPlaces.querySelector('.popup__input_type_place-link');
-//const popupOverlays = document.querySelectorAll('.popup__overlay');
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -58,7 +58,7 @@ const validationConfig = {
 const profileFormValidator = new FormValidator(validationConfig, profileForm);
 const placeFormValidator = new FormValidator(validationConfig, placeForm);
 
-
+// Создаем экземпляр попапа с увеличенной картинкой
 const popupWithImage = new PopupWithImage('.popup_contain_image');
 popupWithImage.setEventListeners();
 
@@ -77,16 +77,15 @@ const cardList = new Section({
 
 cardList.renderItems();
 
+//Сщздаем экземпляр класса с профилем
 
-
+const userProfile = new UserInfo({nameSelector:'.profile__name', jobSelector:'.profile__job'});
 
 /*function handleEscButton(evt) {
   if (evt.key === "Escape") {
     closePopup(document.querySelector('.popup_opened'));
   }
 }
-
-
 */
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
@@ -99,8 +98,9 @@ function openPopup(popup) {
 // функция открытия попапа с формой профиля
 function handleProfileForm() {
   openPopup(popupProfile);
-  nameInput.value = nameProfile.textContent;
-  jobInput.value = jobProfile.textContent;
+  userProfile.getUserInfo(nameInput, jobInput)
+  //nameInput.value = nameProfile.textContent;
+ // jobInput.value = jobProfile.textContent;
   profileFormValidator.resetValidation();
 }
 
@@ -114,8 +114,9 @@ function handleOpenAddForm(item) {
 // функция сохранения профиля
 function handleProfileSubmit(evt) {
   evt.preventDefault();
-  nameProfile.textContent = nameInput.value;
-  jobProfile.textContent = jobInput.value;
+  userProfile.setUserInfo(nameInput, jobInput)
+  //nameProfile.textContent = nameInput.value;
+ // jobProfile.textContent = jobInput.value;
   closePopup(popupProfile);
 }
 
@@ -133,15 +134,6 @@ function handlePlaceSubmit(evt) {
   placeNameInput.value = '';
   placeLinkInput.value = '';
 }
-
-/*
-
-popupOverlays.forEach((elem) => {
-  elem.addEventListener('click', () => {
-    closePopup(elem.closest('.popup'));
-  });
-})
-*/
 
 profileFormValidator.enableValidation();
 placeFormValidator.enableValidation();
