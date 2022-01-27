@@ -1,8 +1,9 @@
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import Section from "../components/Section.js";
-import PopupWithImage  from "../components/PopupWithImage.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 
 const initialPlaces = [
   {
@@ -32,19 +33,13 @@ const initialPlaces = [
 ];
 
 const editButton = document.querySelector('.profile__edit-button');
-const popupProfile = document.querySelector('.popup_contain_profile');
-const popupProfileClose = popupProfile.querySelector('.popup__close-button');
-//const nameProfile = document.querySelector('.profile__name');
-//const jobProfile = document.querySelector('.profile__job');
-const profileForm = popupProfile.querySelector('[name="profileForm"]');
-const nameInput = popupProfile.querySelector('.popup__input_type_name');
-const jobInput = popupProfile.querySelector('.popup__input_type_job');
+//const popupProfile = document.querySelector('.popup_contain_profile');
+//const popupProfileClose = popupProfile.querySelector('.popup__close-button');
+const profileForm = document.querySelector('[name="profileForm"]');
+//const nameInput = popupProfile.querySelector('.popup__input_type_name');
+//const jobInput = popupProfile.querySelector('.popup__input_type_job');
 const addButton = document.querySelector('.lead__add-button');
-const popupPlaces = document.querySelector('.popup_contain_places');
-const placeForm = popupPlaces.querySelector('[name="placeForm"]');
-const placesCloseButton = popupPlaces.querySelector('.popup__close-button');
-const placeNameInput = popupPlaces.querySelector('.popup__input_type_place-name');
-const placeLinkInput = popupPlaces.querySelector('.popup__input_type_place-link');
+const placeForm = document.querySelector('[name="placeForm"]');
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -62,11 +57,11 @@ const placeFormValidator = new FormValidator(validationConfig, placeForm);
 const popupWithImage = new PopupWithImage('.popup_contain_image');
 popupWithImage.setEventListeners();
 
-// Создаем класс секции для добавления карточек
+// Создаем экземпляр секции для добавления карточек
 const cardList = new Section({
     items: initialPlaces,
     renderer: (item) => {
-      const card = new Card(item.name, item.link, '.place-template',() => popupWithImage.open(item.name, item.link) )
+      const card = new Card(item.name, item.link, '.place-template', () => popupWithImage.open(item.name, item.link))
       const cardElement = card.generateCard();
 
       cardList.addItem(cardElement);
@@ -77,70 +72,62 @@ const cardList = new Section({
 
 cardList.renderItems();
 
-//Сщздаем экземпляр класса с профилем
+//Сщздаем экземпляр класса профиля
+const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'});
 
-const userProfile = new UserInfo({nameSelector:'.profile__name', jobSelector:'.profile__job'});
+// Создаем экземпляр класса попапа с формой добавления картинки
+const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
+  const name = data.placeName;
+  const link = data.placeLink;
+  console.log(name);
+  console.log(link);
+  const card = new Card(name, link, '.place-template', () => popupWithImage.open(name, link));
+  const cardElement = card.generateCard();
 
-/*function handleEscButton(evt) {
-  if (evt.key === "Escape") {
-    closePopup(document.querySelector('.popup_opened'));
-  }
-}
-*/
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', handleEscButton);
-}
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-}
+  cardList.addItem(cardElement);
+});
+
+placeFormPopup.setEventListeners();
+
+
+//создаем экземпляр класса попап с формой редактирования профиля
+const profileFormPopup = new PopupWithForm('.popup_contain_profile',(data) => {
+  const name = data.name;
+  const job = data.job;
+
+});
+
+profileFormPopup.setEventListeners();
 
 // функция открытия попапа с формой профиля
 function handleProfileForm() {
   openPopup(popupProfile);
-  userProfile.getUserInfo(nameInput, jobInput)
-  //nameInput.value = nameProfile.textContent;
- // jobInput.value = jobProfile.textContent;
+  userProfile.getUserInfo(nameInput, jobInput);
   profileFormValidator.resetValidation();
-}
-
-//функция открытия формы добавления места
-function handleOpenAddForm(item) {
-  openPopup(popupPlaces);
-  placeForm.reset();
-  placeFormValidator.resetValidation();
 }
 
 // функция сохранения профиля
 function handleProfileSubmit(evt) {
   evt.preventDefault();
-  userProfile.setUserInfo(nameInput, jobInput)
-  //nameProfile.textContent = nameInput.value;
- // jobProfile.textContent = jobInput.value;
+  userProfile.setUserInfo(nameInput, jobInput);
   closePopup(popupProfile);
-}
-
-// функция сохранения фотографии места
-function handlePlaceSubmit(evt) {
-  evt.preventDefault();
-
-  const placeName = placeNameInput.value;
-  const placeLink = placeLinkInput.value;
-  const card = new Card(placeName,placeLink, '.place-template', () => popupWithImage.open(placeName, placeLink));
-  const cardElement = card.generateCard();
-
-  cardList.addItem(cardElement);
-  closePopup(popupPlaces);
-  placeNameInput.value = '';
-  placeLinkInput.value = '';
 }
 
 profileFormValidator.enableValidation();
 placeFormValidator.enableValidation();
 
-editButton.addEventListener('click', handleProfileForm);
-addButton.addEventListener('click', handleOpenAddForm);
-popupProfileClose.addEventListener('click', () => closePopup(popupProfile));
-profileForm.addEventListener('submit', handleProfileSubmit);
-placeForm.addEventListener('submit', handlePlaceSubmit);
-placesCloseButton.addEventListener('click', () => closePopup(popupPlaces));
+
+function handleOpenPlaceFormPopup() {
+  placeFormValidator.resetValidation();
+  placeFormPopup.open()
+}
+
+function handleOpenProfileFormPopup() {
+  profileFormValidator.resetValidation();
+  profileFormPopup.open()
+}
+
+editButton.addEventListener('click', handleOpenProfileFormPopup);
+addButton.addEventListener('click', handleOpenPlaceFormPopup);
+//popupProfileClose.addEventListener('click', () => closePopup(popupProfile));
+//profileForm.addEventListener('submit', handleProfileSubmit);
