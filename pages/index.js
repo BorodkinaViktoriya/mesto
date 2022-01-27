@@ -5,48 +5,16 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 
-const initialPlaces = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-const editButton = document.querySelector('.profile__edit-button');
-const profileForm = document.querySelector('[name="profileForm"]');
-const nameInput = document.querySelector('.popup__input_type_name');
-const jobInput = document.querySelector('.popup__input_type_job');
-const addButton = document.querySelector('.lead__add-button');
-const placeForm = document.querySelector('[name="placeForm"]');
-
-const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-}
+import {
+  initialPlaces,
+  addButton,
+  profileForm,
+  nameInput,
+  jobInput,
+  editButton,
+  placeForm,
+  validationConfig
+} from "../utils/constants.js";
 
 const profileFormValidator = new FormValidator(validationConfig, profileForm);
 const placeFormValidator = new FormValidator(validationConfig, placeForm);
@@ -55,15 +23,18 @@ const placeFormValidator = new FormValidator(validationConfig, placeForm);
 const popupWithImage = new PopupWithImage('.popup_contain_image');
 popupWithImage.setEventListeners();
 
+//создаем функцию с описанием логики добавления карточки
+function creatingCardElement(name, link, section) {
+  const card = new Card(name, link, '.place-template', () => popupWithImage.open(name, link));
+  const cardElement = card.generateCard();
+  section.addItem(cardElement);
+}
 
 // Создаем экземпляр секции для добавления карточек
 const cardList = new Section({
     items: initialPlaces,
     renderer: (item) => {
-      const card = new Card(item.name, item.link, '.place-template', () => popupWithImage.open(item.name, item.link))
-      const cardElement = card.generateCard();
-
-      cardList.addItem(cardElement);
+      creatingCardElement(item.name, item.link, cardList);
     },
   },
   '.places'
@@ -76,12 +47,7 @@ const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '
 
 // Создаем экземпляр класса попапа с формой добавления картинки
 const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
-  const name = data.placeName;
-  const link = data.placeLink;
-  const card = new Card(name, link, '.place-template', () => popupWithImage.open(name, link));
-  const cardElement = card.generateCard();
-
-  cardList.addItem(cardElement);
+  creatingCardElement(data.placeName, data.placeLink, cardList);
 });
 
 placeFormPopup.setEventListeners();
