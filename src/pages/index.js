@@ -1,8 +1,10 @@
 import './index.css';
 
 import Card from '../components/Card.js';
+
 import FormValidator from '../components/FormValidator.js';
 import Section from "../components/Section.js";
+import Api from "../components/Api.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithForm from "../components/PopupWithForm.js";
@@ -18,6 +20,8 @@ import {
   validationConfig
 } from "../utils/constants.js";
 
+
+
 const profileFormValidator = new FormValidator(validationConfig, profileForm);
 const placeFormValidator = new FormValidator(validationConfig, placeForm);
 
@@ -32,17 +36,45 @@ function creatingCardElement(name, link, section) {
   section.addItem(cardElement);
 }
 
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-35',
+  token: '1a9c130a-42c2-4c9b-811e-578089f7924f',
+  });
+
+/*
 // Создаем экземпляр секции для добавления карточек
 const cardList = new Section({
-    items: initialPlaces,
+    items,
     renderer: (item) => {
       creatingCardElement(item.name, item.link, cardList);
     },
   },
   '.places'
 );
+*/
 
-cardList.renderItems();
+api.getInitialCards()
+  .then((cards) => {
+    console.log(cards)
+
+    const cardList = new Section({
+        items: cards,
+        renderer: (item) => {
+          creatingCardElement(item.name, item.link, cardList);
+          console.log(item.name)
+          console.log(item.link)
+          },
+      },
+      '.places' );
+    cardList.renderItems();
+  })
+  .catch((err) => {
+    console.log(err); // выведем ошибку в консоль
+  });
+
+
+
+//cardList.renderItems();
 
 //Сщздаем экземпляр класса профиля
 const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'});
@@ -82,7 +114,7 @@ placeFormValidator.enableValidation();
 editButton.addEventListener('click', handleOpenProfileFormPopup);
 addButton.addEventListener('click', handleOpenPlaceFormPopup);
 
-fetch('https://nomoreparties.co/v1/cohort-35/users/me', {
+/*fetch('https://nomoreparties.co/v1/cohort-35/users/me', {
   headers: {
     authorization: '1a9c130a-42c2-4c9b-811e-578089f7924f'
   }
@@ -90,4 +122,4 @@ fetch('https://nomoreparties.co/v1/cohort-35/users/me', {
   .then(res => res.json())
   .then((result) => {
     console.log(result);
-  });
+  });*/
