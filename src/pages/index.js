@@ -81,3 +81,13 @@ placeFormValidator.enableValidation();
 
 editButton.addEventListener('click', handleOpenProfileFormPopup);
 addButton.addEventListener('click', handleOpenPlaceFormPopup);
+
+fetch('https://nomoreparties.co/v1/cohort-35/users/me', {
+  headers: {
+    authorization: '1a9c130a-42c2-4c9b-811e-578089f7924f'
+  }
+})
+  .then(res => res.json())
+  .then((result) => {
+    console.log(result);
+  });
