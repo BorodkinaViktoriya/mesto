@@ -1,14 +1,13 @@
 export default class Api {
-  constructor({baseUrl, token}) {
+  constructor({baseUrl, headers}) {
     this._baseUrl = baseUrl;
-    this._token = token;
+    this._headers = headers;
+    console.log(this._headers)
   }
 
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: {
-        authorization: this._token
-      }
+      headers: this._headers
     })
       .then(res => {
         if (res.ok) {
@@ -18,11 +17,9 @@ export default class Api {
       })
   }
 
-  getUserServerInfo() {
+  getUserServerData() {
     return fetch(`${this._baseUrl}/users/me `, {
-      headers: {
-        authorization: this._token
-      }
+      headers: this._headers
     })
       .then(res => {
         if (res.ok) {

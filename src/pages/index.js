@@ -17,6 +17,7 @@ import {
   editButton,
   placeForm,
   avatarEditForm,
+  avatarContainer,
   validationConfig
 } from "../utils/constants.js";
 
@@ -39,8 +40,11 @@ function creatingCardElement(name, link, section) {
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-35',
-  token: '1a9c130a-42c2-4c9b-811e-578089f7924f',
-  });
+  headers: {
+    authorization: '1a9c130a-42c2-4c9b-811e-578089f7924f',
+    'Content-Type': 'application/json'
+  }
+});
 
 // отобразим на странице карточки с сервера
 api.getInitialCards()
@@ -58,16 +62,11 @@ api.getInitialCards()
     console.log(err); // выведем ошибку в консоль
   });
 
-const avatarContainer = document.querySelector('.profile__foto')
-
-avatarContainer.addEventListener('click', () => console.log('КАРТИНКА ЩЕЛКУНЛВАТЬ'))
 //Сщздаем экземпляр класса профиля
 const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'},  avatarContainer);
 
-api.getUserServerInfo()
+api.getUserServerData()
   .then((userInfo) => {
-
-    console.log(`infoUseser: ${userInfo}`)
     userProfile.setAvatar(userInfo.avatar);
     userProfile.setUserInfo(userInfo.name, userInfo.about)
   })
@@ -75,11 +74,7 @@ api.getUserServerInfo()
     console.log(err); // выведем ошибку в консоль
   });
 
-
-
-
-
-userProfile.setAvatar('https://as2.ftcdn.net/v2/jpg/04/66/69/69/1000_F_466696980_16HIVp6JZzBqExKqlT9wATQrAkQB3Kg8.jpg')
+//
 
 // Создаем экземпляр класса попапа с формой добавления картинки
 const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
@@ -95,6 +90,23 @@ const profileFormPopup = new PopupWithForm('.popup_contain_profile', (data) => {
 
 profileFormPopup.setEventListeners();
 
+//создаем экземпляр класса попап с формой редактирования аватара
+
+const avatarFormPopup = new PopupWithForm('.popup_contain_avatar-form', (data) => {
+//закрыть попап, поменять аватар  == позже будет отправить запрос на сервер и поменять там аватар
+
+  userProfile.setAvatar(data.avatarLink)
+  avatarFormPopup.close()
+  console.log(nameInput.value)
+});
+
+avatarFormPopup.setEventListeners();
+
+function handleOpenAvatarFormPopup() {
+  avatarFormValidation.resetValidation();
+  avatarFormPopup.open()
+}
+
 
 function handleOpenPlaceFormPopup() {
   placeFormValidator.resetValidation();
@@ -102,7 +114,6 @@ function handleOpenPlaceFormPopup() {
 }
 
 function handleOpenProfileFormPopup() {
-
   const profile = userProfile.getUserInfo();
   nameInput.value = profile.name;
   jobInput.value = profile.job;
@@ -116,13 +127,4 @@ avatarFormValidation.enableValidation();
 
 editButton.addEventListener('click', handleOpenProfileFormPopup);
 addButton.addEventListener('click', handleOpenPlaceFormPopup);
-
-/*fetch('https://nomoreparties.co/v1/cohort-35/users/me', {
-  headers: {
-    authorization: '1a9c130a-42c2-4c9b-811e-578089f7924f'
-  }
-})
-  .then(res => res.json())
-  .then((result) => {
-    console.log(result);
-  });*/
+avatarContainer.addEventListener('click', handleOpenAvatarFormPopup)

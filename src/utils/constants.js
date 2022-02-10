@@ -6,6 +6,7 @@ export const jobInput = document.querySelector('.popup__input_type_job');
 export const addButton = document.querySelector('.lead__add-button');
 export const placeForm = document.querySelector('[name="placeForm"]');
 export const avatarEditForm = document.querySelector('[name="avatarEditForm"]');
+export const avatarContainer = document.querySelector('.profile__foto')
 
 export const validationConfig = {
   formSelector: '.popup__form',
