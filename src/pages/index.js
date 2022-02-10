@@ -55,14 +55,10 @@ const cardList = new Section({
 
 api.getInitialCards()
   .then((cards) => {
-    console.log(cards)
-
     const cardList = new Section({
         items: cards,
         renderer: (item) => {
           creatingCardElement(item.name, item.link, cardList);
-          console.log(item.name)
-          console.log(item.link)
           },
       },
       '.places' );
@@ -72,12 +68,28 @@ api.getInitialCards()
     console.log(err); // выведем ошибку в консоль
   });
 
+const avatarContainer = document.querySelector('.profile__foto')
 
-
-//cardList.renderItems();
-
+avatarContainer.addEventListener('click', () => console.log('КАРТИНКА ЩЕЛКУНЛВАТЬ'))
 //Сщздаем экземпляр класса профиля
-const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'});
+const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job', avatarContainer: avatarContainer});
+
+api.getUserServerInfo()
+  .then((userInfo) => {
+
+    console.log(`infoOUsesre: ${userInfo}`)
+    userProfile.setAvatar(userInfo.avatar);
+    userProfile.setUserInfo(userInfo.name, userInfo.about)
+  })
+  .catch((err) => {
+    console.log(err); // выведем ошибку в консоль
+  });
+
+
+
+
+
+userProfile.setAvatar('https://as2.ftcdn.net/v2/jpg/04/66/69/69/1000_F_466696980_16HIVp6JZzBqExKqlT9wATQrAkQB3Kg8.jpg')
 
 // Создаем экземпляр класса попапа с формой добавления картинки
 const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
