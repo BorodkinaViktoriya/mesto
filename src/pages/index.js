@@ -10,13 +10,13 @@ import UserInfo from "../components/UserInfo.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 
 import {
-  initialPlaces,
   addButton,
   profileForm,
   nameInput,
   jobInput,
   editButton,
   placeForm,
+  avatarEditForm,
   validationConfig
 } from "../utils/constants.js";
 
@@ -24,6 +24,7 @@ import {
 
 const profileFormValidator = new FormValidator(validationConfig, profileForm);
 const placeFormValidator = new FormValidator(validationConfig, placeForm);
+const avatarFormValidation = new FormValidator(validationConfig, avatarEditForm);
 
 // Создаем экземпляр попапа с увеличенной картинкой
 const popupWithImage = new PopupWithImage('.popup_contain_image');
@@ -41,18 +42,7 @@ const api = new Api({
   token: '1a9c130a-42c2-4c9b-811e-578089f7924f',
   });
 
-/*
-// Создаем экземпляр секции для добавления карточек
-const cardList = new Section({
-    items,
-    renderer: (item) => {
-      creatingCardElement(item.name, item.link, cardList);
-    },
-  },
-  '.places'
-);
-*/
-
+// отобразим на странице карточки с сервера
 api.getInitialCards()
   .then((cards) => {
     const cardList = new Section({
@@ -72,12 +62,12 @@ const avatarContainer = document.querySelector('.profile__foto')
 
 avatarContainer.addEventListener('click', () => console.log('КАРТИНКА ЩЕЛКУНЛВАТЬ'))
 //Сщздаем экземпляр класса профиля
-const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job', avatarContainer: avatarContainer});
+const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'},  avatarContainer);
 
 api.getUserServerInfo()
   .then((userInfo) => {
 
-    console.log(`infoOUsesre: ${userInfo}`)
+    console.log(`infoUseser: ${userInfo}`)
     userProfile.setAvatar(userInfo.avatar);
     userProfile.setUserInfo(userInfo.name, userInfo.about)
   })
@@ -122,6 +112,7 @@ function handleOpenProfileFormPopup() {
 
 profileFormValidator.enableValidation();
 placeFormValidator.enableValidation();
+avatarFormValidation.enableValidation();
 
 editButton.addEventListener('click', handleOpenProfileFormPopup);
 addButton.addEventListener('click', handleOpenPlaceFormPopup);
