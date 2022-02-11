@@ -58,7 +58,6 @@ function creatingCardElement(data, section) {
   section.addItem(cardElement);
 }
 
-
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-35',
   headers: {
@@ -90,11 +89,18 @@ const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '
 api.getUserServerData()
   .then((userInfo) => {
     userProfile.setAvatar(userInfo.avatar);
-    userProfile.setUserInfo(userInfo.name, userInfo.about)
+    userProfile.setUserInfo(userInfo.name, userInfo.about);
+    const myUserId = userInfo._id;
+    console.log(userInfo)
+    console.log(userInfo._id)
+    console.log(myUserId)
+    return myUserId;
   })
   .catch((err) => {
     console.log(`ошибка при получении данных пльзователя с сервера: ${err}`);
   });
+
+console.log('теперь айди доступно снаружи', myUserId)
 
 // Создаем экземпляр класса попапа с формой добавления картинки
 const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
@@ -172,21 +178,6 @@ function handleOpenProfileFormPopup() {
 profileFormValidator.enableValidation();
 placeFormValidator.enableValidation();
 avatarFormValidation.enableValidation();
-
-//"https://pictures.s3.yandex.net/frontend-developer/common/ava.jpg"
-
-const createMessage = (data) => {
-  const message = new Message({
-    data,
-    handleDeleteButtonClick: () => {
-      api.deleteMessage(message.getId())
-        .then(() => message.removeMessage())
-        .catch(err => console.log(`Ошибка при удалении сообщения: ${err}`))
-    }
-  }, messageSelector);
-  return message.getView()
-};
-
 
 editButton.addEventListener('click', handleOpenProfileFormPopup);
 addButton.addEventListener('click', handleOpenPlaceFormPopup);
