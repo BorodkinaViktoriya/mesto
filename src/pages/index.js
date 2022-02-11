@@ -31,22 +31,33 @@ const avatarFormValidation = new FormValidator(validationConfig, avatarEditForm)
 const popupWithImage = new PopupWithImage('.popup_contain_image');
 popupWithImage.setEventListeners();
 
-
-function buttonText(text) {
-  document.querySelector('.popup_opened').querySelector('.popup__button').textContent = text;
-}
-
+const popupWithConfirmation = new PopupWithConfirmation('.popup_contain_confirmation')
+popupWithConfirmation.setEventListeners();
 
 //создаем функцию с описанием логики добавления карточки
 function creatingCardElement(data, section) {
   const card = new Card({data}, '.place-template',
     () => popupWithImage.open(data.name, data.link),
-    () =>{
+    () => {
+      popupWithConfirmation.open();
+      popupWithConfirmation.setConfirmAction(() => {
 
-    });
+        api.deleteCard(card.getCardId())
+          .then(() => {
+            card.removeCardElement();
+            popupWithConfirmation.close()
+          }).catch((err) => {
+          console.log(`ошибка при удалении карточек с сервера: ${err}`)
+        })
+
+      })
+
+    })
+
   const cardElement = card.generateCard();
   section.addItem(cardElement);
 }
+
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-35',
@@ -68,7 +79,6 @@ api.getInitialCards()
   .then((cards) => {
     cardList.renderItems(cards);
   })
-
   .catch((err) => {
     console.log(`ошибка при загрузке карточек с сервера: ${err}`);
   });
@@ -88,7 +98,7 @@ api.getUserServerData()
 
 // Создаем экземпляр класса попапа с формой добавления картинки
 const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
-  renderLoading(placeFormSubmitButton, 'Сохранение...')
+  placeFormSubmitButton.textContent = 'Сохранение...'
   api.addCard(data.placeName, data.placeLink)
     .then((card) => {
       creatingCardElement(card, cardList);
@@ -97,7 +107,7 @@ const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
       console.log(`ошибка при добавлении карточки сервер: ${err}`);
     })
     .finally(() => {
-      renderLoading(placeFormSubmitButton, 'Создать')
+      placeFormSubmitButton.textContent = 'Создать'
     })
 });
 
@@ -110,7 +120,7 @@ function renderLoading(button, text) {
 
 //создаем экземпляр класса попап с формой редактирования профиля
 const profileFormPopup = new PopupWithForm('.popup_contain_profile', (data) => {
-  renderLoading(profileFormSubmitButton, 'Сохранение...')
+  profileFormSubmitButton.textContent = 'Сохранение...'
   api.editUserProfileData(data.name, data.job)
     .then((info) => {
       userProfile.setUserInfo(info.name, info.about)
@@ -119,7 +129,7 @@ const profileFormPopup = new PopupWithForm('.popup_contain_profile', (data) => {
       console.log(`ошибка при изменении данных пльзователя: ${err}`);
     })
     .finally(() => {
-      renderLoading(profileFormSubmitButton, 'Сохранить')
+      profileFormSubmitButton.textContent = 'Сохранить'
     })
 });
 
@@ -177,9 +187,7 @@ const createMessage = (data) => {
   return message.getView()
 };
 
-//    handleRemoveCard
-
 
 editButton.addEventListener('click', handleOpenProfileFormPopup);
 addButton.addEventListener('click', handleOpenPlaceFormPopup);
-avatarContainer.addEventListener('click', handleOpenAvatarFormPopup)
+avatarContainer.addEventListener('click', handleOpenAvatarFormPopup);
