@@ -6,6 +6,7 @@ import Api from "../components/Api.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 
 import {
   addButton,
@@ -37,8 +38,12 @@ function buttonText(text) {
 
 
 //создаем функцию с описанием логики добавления карточки
-function creatingCardElement(name, link, section) {
-  const card = new Card(name, link, '.place-template', () => popupWithImage.open(name, link));
+function creatingCardElement(data, section) {
+  const card = new Card({data}, '.place-template',
+    () => popupWithImage.open(data.name, data.link),
+    () =>{
+
+    });
   const cardElement = card.generateCard();
   section.addItem(cardElement);
 }
@@ -53,7 +58,7 @@ const api = new Api({
 
 const cardList = new Section({
     renderer: (item) => {
-      creatingCardElement(item.name, item.link, cardList);
+      creatingCardElement(item, cardList);
     },
   },
   '.places');
@@ -63,8 +68,9 @@ api.getInitialCards()
   .then((cards) => {
     cardList.renderItems(cards);
   })
+
   .catch((err) => {
-    console.log(`ошибка при загрузке карточек с сервера: ${err}`); // выведем ошибку в консоль
+    console.log(`ошибка при загрузке карточек с сервера: ${err}`);
   });
 
 //Сщздаем экземпляр класса профиля
@@ -85,7 +91,7 @@ const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
   renderLoading(placeFormSubmitButton, 'Сохранение...')
   api.addCard(data.placeName, data.placeLink)
     .then((card) => {
-      creatingCardElement(card.name, card.link, cardList);
+      creatingCardElement(card, cardList);
     })
     .catch((err) => {
       console.log(`ошибка при добавлении карточки сервер: ${err}`);
@@ -158,6 +164,21 @@ placeFormValidator.enableValidation();
 avatarFormValidation.enableValidation();
 
 //"https://pictures.s3.yandex.net/frontend-developer/common/ava.jpg"
+
+const createMessage = (data) => {
+  const message = new Message({
+    data,
+    handleDeleteButtonClick: () => {
+      api.deleteMessage(message.getId())
+        .then(() => message.removeMessage())
+        .catch(err => console.log(`Ошибка при удалении сообщения: ${err}`))
+    }
+  }, messageSelector);
+  return message.getView()
+};
+
+//    handleRemoveCard
+
 
 editButton.addEventListener('click', handleOpenProfileFormPopup);
 addButton.addEventListener('click', handleOpenPlaceFormPopup);

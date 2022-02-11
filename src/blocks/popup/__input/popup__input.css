@@ -1,6 +1,6 @@
 .popup__input {
   min-width: 100%;
-  margin: 0 auto;
+  margin: 14px auto 0;
   display: block;
   font-size: 14px;
   line-height: 17px;
@@ -9,6 +9,10 @@
   padding: 0 0 8px 1px;
   border-width: 0 0 1px;
   border-color: rgba(0, 0, 0, 0.2);
+}
+
+.popup__input:first-of-type {
+  margin-top: 19px;
 }
 
 .popup__input:focus {

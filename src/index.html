@@ -104,12 +104,23 @@
             name="avatarLink" placeholder="Ссылка на аватар" required
           />
           <span id="avatar-link-error" class="popup__error"></span>
-        </fieldset>
+        </fieldset >
         <button class="popup__close-button" type="button"></button>
         <button class="popup__button" type="submit">Cохранить</button>
       </form>
     </div>
   </div>
+
+  <div class="popup popup_contain_confirmation">
+    <div class="popup__overlay"></div>
+    <div class="popup__container">
+          <h2 class="popup__title">Вы уверены?</h2>
+        <button class="popup__close-button" type="button"></button>
+        <button class="popup__button" type="button">Да</button>
+    </div>
+  </div>
+
+
 </div>
 <template class="place-template">
   <figure class="place">
