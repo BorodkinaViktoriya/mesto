@@ -46,7 +46,7 @@ const api = new Api({
   }
 });
 
-//создаем функцию с описанием логики добавления карточки
+//создаем функцию с логикой добавления карточки
 function createCard(data, section, myId) {
   const card = new Card({data}, '.place-template',
     {

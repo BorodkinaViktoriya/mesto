@@ -1,4 +1,3 @@
-
 export const editButton = document.querySelector('.profile__edit-button');
 export const profileForm = document.querySelector('[name="profileForm"]');
 export const nameInput = document.querySelector('.popup__input_type_name');
@@ -10,7 +9,6 @@ export const avatarContainer = document.querySelector('.profile__foto')
 export const avatarFormSubmitButton = avatarEditForm.querySelector('.popup__button')
 export const placeFormSubmitButton = placeForm.querySelector('.popup__button')
 export const profileFormSubmitButton = profileForm.querySelector('.popup__button')
-
 
 export const validationConfig = {
   formSelector: '.popup__form',
