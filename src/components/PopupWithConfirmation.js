@@ -1,7 +1,6 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithConfirmation extends Popup {
-  //constructor(popupSelector, confirmAction) {
   constructor(popupSelector) {
     super(popupSelector);
     this._confirmationButton = this._popup.querySelector('.popup__button');

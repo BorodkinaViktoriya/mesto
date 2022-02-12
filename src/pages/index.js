@@ -82,16 +82,13 @@ function createCard(data, section, myId) {
             console.log(`ошибка при лайке карточки: ${err}`);
           })
         }
-
       }
     })
   const cardElement = card.generateCard(myId);
-  return cardElement
+  return cardElement;
 }
 
-//тестим промис
-Promise.all([api.getUserServerData(), api.getInitialCards()]).then( ([userInfo, cards ])=> {
-console.log('LFNF PROMISEALL', userInfo, cards )
+Promise.all([api.getUserServerData(), api.getInitialCards()]).then(([userInfo, cards]) => {
 
   userProfile.setAvatar(userInfo.avatar);
   userProfile.setUserInfo(userInfo.name, userInfo.about);
@@ -100,7 +97,7 @@ console.log('LFNF PROMISEALL', userInfo, cards )
   // отобразим на странице карточки с сервера после получения myID
   const cardList = new Section({
       renderer: (items) => {
-        const itemList =  items.map((item) => {
+        const itemList = items.map((item) => {
           return createCard(item, cardList, myUserId);
         });
         return itemList;
@@ -145,67 +142,6 @@ console.log('LFNF PROMISEALL', userInfo, cards )
   .catch((err) => {
     console.log(`ошибка при получении данных пльзователя с сервера: ${err}`);
   })
-
-//ntcnbv ghjvbc
-
-/*
-//Получаем и отображаем данные пользователя с сервера
-api.getUserServerData()
-  .then((userInfo) => {
-    userProfile.setAvatar(userInfo.avatar);
-    userProfile.setUserInfo(userInfo.name, userInfo.about);
-    const myUserId = userInfo._id;
-    return myUserId;
-  }).then((myUserId) => {
-  // отобразим на странице карточки с сервера после получения myID
-  const cardList = new Section({
-      renderer: (items) => {
-        const itemList =  items.map((item) => {
-          return createCard(item, cardList, myUserId);
-        });
-        return itemList;
-      },
-    },
-    '.places');
-
-  api.getInitialCards()
-    .then((cards) => {
-      cardList.renderItems(cards);
-
-      // Создаем экземпляр класса попапа с формой добавления картинки
-      const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
-        placeFormSubmitButton.textContent = 'Сохранение...'
-        api.addCard(data.placeName, data.placeLink)
-          .then((card) => {
-            const newCard = createCard(card, cardList, myUserId);
-            cardList.addItem(newCard)
-            placeFormPopup.close()
-          })
-          .catch((err) => {
-            console.log(`ошибка при добавлении карточки сервер: ${err}`);
-          })
-          .finally(() => {
-            placeFormSubmitButton.textContent = 'Создать'
-          })
-      });
-
-      placeFormPopup.setEventListeners();
-
-      function handleOpenPlaceFormPopup() {
-        placeFormValidator.resetValidation();
-        placeFormPopup.open()
-      }
-
-      addButton.addEventListener('click', handleOpenPlaceFormPopup);
-    })
-    .catch((err) => {
-      console.log(`ошибка при загрузке карточек с сервера: ${err}`);
-    });
-})
-  .catch((err) => {
-    console.log(`ошибка при получении данных пльзователя с сервера: ${err}`);
-  });
-*/
 
 //создаем экземпляр класса попап с формой редактирования профиля
 const profileFormPopup = new PopupWithForm('.popup_contain_profile', (data) => {
@@ -260,5 +196,4 @@ placeFormValidator.enableValidation();
 avatarFormValidation.enableValidation();
 
 editButton.addEventListener('click', handleOpenProfileFormPopup);
-
 avatarContainer.addEventListener('click', handleOpenAvatarFormPopup);
