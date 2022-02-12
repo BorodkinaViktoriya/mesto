@@ -88,6 +88,7 @@ function createCard(data, section, myId) {
   return cardElement;
 }
 
+// делаем обработку после получения данных от сервераq
 Promise.all([api.getUserServerData(), api.getInitialCards()]).then(([userInfo, cards]) => {
 
   userProfile.setAvatar(userInfo.avatar);
