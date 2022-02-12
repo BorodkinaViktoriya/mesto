@@ -37,21 +37,44 @@ popupWithConfirmation.setEventListeners();
 //создаем функцию с описанием логики добавления карточки
 function creatingCardElement(data, section) {
   const card = new Card({data}, '.place-template',
-    () => popupWithImage.open(data.name, data.link),
-    () => {
-      popupWithConfirmation.open();
-      popupWithConfirmation.setConfirmAction(() => {
+    {
+      handleCardClick: () => popupWithImage.open(data.name, data.link),
+      handleDeleteButton: () => {
+        popupWithConfirmation.open();
+        popupWithConfirmation.setConfirmAction(() => {
 
-        api.deleteCard(card.getCardId())
-          .then(() => {
-            card.removeCardElement();
-            popupWithConfirmation.close()
-          }).catch((err) => {
-          console.log(`ошибка при удалении карточек с сервера: ${err}`)
+          api.deleteCard(card.getCardId())
+            .then(() => {
+              card.removeCardElement();
+              popupWithConfirmation.close()
+            }).catch((err) => {
+            console.log(`ошибка при удалении карточек с сервера: ${err}`)
+          })
+
         })
 
-      })
+      },
+      handleLikeClick: (evt) => {
+        if (!evt.target.classList.contains('place__like-button_active')) {
+          api.addLike(card.getCardId())
+            .then((data) => {
+              card.toggleLikeActive();
+              card.setLikeNumber(data.likes)
+            })
+            .catch((err) => {
+              console.log(`ошибка при лайке карточки: ${err}`);
+            });
+        } else {
+          api.removeLike(card.getCardId())
+            .then((data) => {
+              card.toggleLikeActive();
+              card.setLikeNumber(data.likes)
+            }).catch((err) => {
+            console.log(`ошибка при лайке карточки: ${err}`);
+          })
+        }
 
+      }
     })
 
   const cardElement = card.generateCard();
@@ -82,7 +105,7 @@ api.getInitialCards()
     console.log(`ошибка при загрузке карточек с сервера: ${err}`);
   });
 
-//Сщздаем экземпляр класса профиля
+//С0здаем экземпляр класса профиля
 const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'}, avatarContainer);
 
 //Получаем и отображаем данные пользователя с сервера
@@ -90,17 +113,17 @@ api.getUserServerData()
   .then((userInfo) => {
     userProfile.setAvatar(userInfo.avatar);
     userProfile.setUserInfo(userInfo.name, userInfo.about);
-    const myUserId = userInfo._id;
-    console.log(userInfo)
-    console.log(userInfo._id)
-    console.log(myUserId)
-    return myUserId;
+    //  const myUserId = userInfo._id;
+    //console.log(userInfo)
+    // console.log(userInfo._id)
+    //  console.log(myUserId)
+    // return myUserId;
   })
   .catch((err) => {
     console.log(`ошибка при получении данных пльзователя с сервера: ${err}`);
   });
 
-console.log('теперь айди доступно снаружи', myUserId)
+//console.log('теперь айди доступно снаружи', myUserId)
 
 // Создаем экземпляр класса попапа с формой добавления картинки
 const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
