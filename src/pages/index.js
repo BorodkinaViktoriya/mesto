@@ -34,6 +34,15 @@ popupWithImage.setEventListeners();
 const popupWithConfirmation = new PopupWithConfirmation('.popup_contain_confirmation')
 popupWithConfirmation.setEventListeners();
 
+
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-35',
+  headers: {
+    authorization: '1a9c130a-42c2-4c9b-811e-578089f7924f',
+    'Content-Type': 'application/json'
+  }
+});
+
 //создаем функцию с описанием логики добавления карточки
 function creatingCardElement(data, section) {
   const card = new Card({data}, '.place-template',
@@ -76,18 +85,10 @@ function creatingCardElement(data, section) {
 
       }
     })
-
   const cardElement = card.generateCard();
   section.addItem(cardElement);
 }
 
-const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-35',
-  headers: {
-    authorization: '1a9c130a-42c2-4c9b-811e-578089f7924f',
-    'Content-Type': 'application/json'
-  }
-});
 
 const cardList = new Section({
     renderer: (item) => {
@@ -96,14 +97,7 @@ const cardList = new Section({
   },
   '.places');
 
-// отобразим на странице карточки с сервера
-api.getInitialCards()
-  .then((cards) => {
-    cardList.renderItems(cards);
-  })
-  .catch((err) => {
-    console.log(`ошибка при загрузке карточек с сервера: ${err}`);
-  });
+
 
 //С0здаем экземпляр класса профиля
 const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'}, avatarContainer);
@@ -113,17 +107,25 @@ api.getUserServerData()
   .then((userInfo) => {
     userProfile.setAvatar(userInfo.avatar);
     userProfile.setUserInfo(userInfo.name, userInfo.about);
-    //  const myUserId = userInfo._id;
-    //console.log(userInfo)
+     const myUserId = userInfo._id;
+    console.log(myUserId)
     // console.log(userInfo._id)
-    //  console.log(myUserId)
-    // return myUserId;
-  })
+    return myUserId;
+  }).then((myUserId) => {
+    console.log ('Получиkjcm dsnfobnm',myUserId)
+
+  // отобразим на странице карточки с сервера после получения myID
+  api.getInitialCards()
+    .then((cards) => {
+      cardList.renderItems(cards);
+    })
+    .catch((err) => {
+      console.log(`ошибка при загрузке карточек с сервера: ${err}`);
+    });
+})
   .catch((err) => {
     console.log(`ошибка при получении данных пльзователя с сервера: ${err}`);
   });
-
-//console.log('теперь айди доступно снаружи', myUserId)
 
 // Создаем экземпляр класса попапа с формой добавления картинки
 const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
@@ -166,7 +168,7 @@ profileFormPopup.setEventListeners();
 
 //создаем экземпляр класса попап с формой редактирования аватара
 const avatarFormPopup = new PopupWithForm('.popup_contain_avatar-form', (data) => {
-  renderLoading(avatarFormSubmitButton, 'Сохранение...')
+  avatarFormSubmitButton.textContent = 'Сохранение...'
   api.editUserAvatar(data.avatarLink)
     .then((info) => {
       userProfile.setAvatar(info.avatar)
@@ -174,7 +176,7 @@ const avatarFormPopup = new PopupWithForm('.popup_contain_avatar-form', (data) =
     .catch((err) => {
       console.log(`ошибка при изменении аватара пльзователя: ${err}`); // выведем ошибку в консоль
     }).finally(() => {
-    renderLoading(avatarFormSubmitButton, 'Сохранить')
+    avatarFormSubmitButton.textContent = 'Сохранить'
   })
 });
 
