@@ -1,9 +1,10 @@
 export default class Card {
-  constructor({data}, cardSelector, {handleCardClick, handleDeleteButton,handleLikeClick}) {
+  constructor({data}, cardSelector, {handleCardClick, handleDeleteButton, handleLikeClick}) {
     this._name = data.name;
     this._link = data.link;
     this._id = data._id;
     this._likes = data.likes;
+    this._ovnerId = data.owner._id;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteButtonClick = handleDeleteButton;
@@ -29,10 +30,17 @@ export default class Card {
     this._placeLikeButton.classList.toggle('place__like-button_active');
   }
 
-  _setEventListeners = () => {
-    this._element.querySelector('.place__remove-button').addEventListener('click', this._handleDeleteButtonClick);
-    this._placeLikeButton.addEventListener('click', this._handleLikeClick);
-    this._placeImage.addEventListener('click', () => this._handleCardClick(this._name, this._link));
+  _setEventListeners = (myId) => {
+    if (myId === this._ovnerId) {
+      this._element.querySelector('.place__remove-button').addEventListener('click', this._handleDeleteButtonClick);
+      this._placeLikeButton.addEventListener('click', this._handleLikeClick);
+      this._placeImage.addEventListener('click', () => this._handleCardClick(this._name, this._link));
+    } else {
+      this._element.querySelector('.place__remove-button').style.display = 'none';
+      this._placeLikeButton.addEventListener('click', this._handleLikeClick);
+      this._placeImage.addEventListener('click', () => this._handleCardClick(this._name, this._link));
+    }
+
   }
 
   setLikeNumber = (likes) => {
@@ -43,13 +51,12 @@ export default class Card {
     return this._id;
   }
 
-  generateCard = () => {
+  generateCard = (myId) => {
     this._element = this._getTemplate();
-    this._setEventListeners();
+    this._setEventListeners(myId);
     this._element.querySelector('.place__title').textContent = this._name;
     this._placeImage.src = this._link;
     this._placeImage.alt = this._name;
-
     this.setLikeNumber(this._likes);
     return this._element;
   };

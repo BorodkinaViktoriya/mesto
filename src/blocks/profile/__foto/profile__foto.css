@@ -2,7 +2,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-image: url('../../../images/Avatar.jpg');
+  background-image: url('#');
   background-size: cover;
   background-position: center;
   position: relative;
