@@ -5,10 +5,8 @@ export default class Section {
   }
 
   renderItems(items) {
-    items.forEach((item) => {
-        this._renderer(item)
-      }
-    );
+    this._reneredList = this._renderer(items);
+    this._container.append(...this._reneredList)
   }
 
   addItem(element) {

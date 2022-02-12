@@ -47,7 +47,7 @@ const api = new Api({
 });
 
 //создаем функцию с описанием логики добавления карточки
-function creatingCardElement(data, section, myId) {
+function createCard(data, section, myId) {
   const card = new Card({data}, '.place-template',
     {
       handleCardClick: () => popupWithImage.open(data.name, data.link),
@@ -86,8 +86,13 @@ function creatingCardElement(data, section, myId) {
       }
     })
   const cardElement = card.generateCard(myId);
-  section.addItem(cardElement);
+  return cardElement
 }
+
+//тестим промис
+
+//ntcnbv ghjvbc
+
 
 //Получаем и отображаем данные пользователя с сервера
 api.getUserServerData()
@@ -99,8 +104,11 @@ api.getUserServerData()
   }).then((myUserId) => {
   // отобразим на странице карточки с сервера после получения myID
   const cardList = new Section({
-      renderer: (item) => {
-        creatingCardElement(item, cardList, myUserId);
+      renderer: (items) => {
+        const itemList =  items.map((item) => {
+          return createCard(item, cardList, myUserId);
+        });
+        return itemList;
       },
     },
     '.places');
@@ -114,7 +122,8 @@ api.getUserServerData()
         placeFormSubmitButton.textContent = 'Сохранение...'
         api.addCard(data.placeName, data.placeLink)
           .then((card) => {
-            creatingCardElement(card, cardList, myUserId);
+            const newCard = createCard(card, cardList, myUserId);
+            cardList.addItem(newCard)
             placeFormPopup.close()
           })
           .catch((err) => {

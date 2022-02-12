@@ -40,7 +40,6 @@ export default class Card {
       this._placeLikeButton.addEventListener('click', this._handleLikeClick);
       this._placeImage.addEventListener('click', () => this._handleCardClick(this._name, this._link));
     }
-
   }
 
   setLikeNumber = (likes) => {
@@ -58,6 +57,10 @@ export default class Card {
     this._placeImage.src = this._link;
     this._placeImage.alt = this._name;
     this.setLikeNumber(this._likes);
+    this._likeTerm = this._likes.find(item => item._id = myId) == null
+    if (!this._likeTerm) {
+      this.toggleLikeActive()
+    }
     return this._element;
   };
 }
