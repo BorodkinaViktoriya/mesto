@@ -4,7 +4,7 @@ export default class Card {
     this._link = data.link;
     this._id = data._id;
     this._likes = data.likes;
-    this._ovnerId = data.owner._id;
+    this._ownerId = data.owner._id;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteButtonClick = handleDeleteButton;
@@ -31,8 +31,8 @@ export default class Card {
   }
 
   _setEventListeners = (myId) => {
-    if (myId === this._ovnerId) {
-      this._element.querySelector('.place__remove-button').addEventListener('click', this._handleDeleteButtonClick);
+    if (myId === this._ownerId) {
+      this._element.querySelector('.place__remove-button').addEventListener('click', ()=> this._handleDeleteButtonClick(this));
       this._placeLikeButton.addEventListener('click', this._handleLikeClick);
       this._placeImage.addEventListener('click', () => this._handleCardClick(this._name, this._link));
     } else {
@@ -57,7 +57,7 @@ export default class Card {
     this._placeImage.src = this._link;
     this._placeImage.alt = this._name;
     this.setLikeNumber(this._likes);
-    this._likeTerm = this._likes.find(item => item._id = myId) == null
+    this._likeTerm = this._likes.find(item => item._id == myId) == null
     if (!this._likeTerm) {
       this.toggleLikeActive()
     }

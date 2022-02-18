@@ -31,8 +31,7 @@ const avatarFormValidation = new FormValidator(validationConfig, avatarEditForm)
 const popupWithImage = new PopupWithImage('.popup_contain_image');
 popupWithImage.setEventListeners();
 
-const popupWithConfirmation = new PopupWithConfirmation('.popup_contain_confirmation')
-popupWithConfirmation.setEventListeners();
+
 
 //С0здаем экземпляр класса профиля
 const userProfile = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'}, avatarContainer);
@@ -46,18 +45,23 @@ const api = new Api({
   }
 });
 
+const popupWithConfirmation = new PopupWithConfirmation('.popup_contain_confirmation')
+popupWithConfirmation.setEventListeners();
+
 //создаем функцию с логикой добавления карточки
 function createCard(data, section, myId) {
   const card = new Card({data}, '.place-template',
     {
       handleCardClick: () => popupWithImage.open(data.name, data.link),
-      handleDeleteButton: () => {
+      handleDeleteButton: (card) => {
         popupWithConfirmation.open();
         popupWithConfirmation.setConfirmAction(() => {
+          document.querySelector('.popup_contain_confirmation').querySelector('.popup__button').textContent = 'Удаление...';
           api.deleteCard(card.getCardId())
             .then(() => {
               card.removeCardElement();
-              popupWithConfirmation.close()
+              document.querySelector('.popup_contain_confirmation').querySelector('.popup__button').textContent = 'Да';
+              popupWithConfirmation.close();
             }).catch((err) => {
             console.log(`ошибка при удалении карточек с сервера: ${err}`)
           })
