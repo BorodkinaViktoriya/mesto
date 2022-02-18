@@ -57,7 +57,7 @@ export default class Card {
     this._placeImage.src = this._link;
     this._placeImage.alt = this._name;
     this.setLikeNumber(this._likes);
-    this._likeTerm = this._likes.find(item => item._id == myId) == null
+    this._likeTerm = this._likes.find(item => item._id === myId) == null
     if (!this._likeTerm) {
       this.toggleLikeActive()
     }

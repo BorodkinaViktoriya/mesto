@@ -20,6 +20,7 @@ import {
   avatarFormSubmitButton,
   placeFormSubmitButton,
   profileFormSubmitButton,
+  confirmButton,
   validationConfig
 } from "../utils/constants.js";
 
@@ -56,11 +57,12 @@ function createCard(data, section, myId) {
       handleDeleteButton: (card) => {
         popupWithConfirmation.open();
         popupWithConfirmation.setConfirmAction(() => {
-          document.querySelector('.popup_contain_confirmation').querySelector('.popup__button').textContent = 'Удаление...';
+          confirmButton.textContent = 'Удаление...';
           api.deleteCard(card.getCardId())
             .then(() => {
               card.removeCardElement();
-              document.querySelector('.popup_contain_confirmation').querySelector('.popup__button').textContent = 'Да';
+              confirmButton.textContent = 'Да';
+            confirmButton.textContent = 'Да';
               popupWithConfirmation.close();
             }).catch((err) => {
             console.log(`ошибка при удалении карточек с сервера: ${err}`)
