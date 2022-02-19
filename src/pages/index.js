@@ -17,9 +17,6 @@ import {
   placeForm,
   avatarEditForm,
   avatarContainer,
-  avatarFormSubmitButton,
-  placeFormSubmitButton,
-  profileFormSubmitButton,
   confirmButton,
   validationConfig
 } from "../utils/constants.js";
@@ -61,12 +58,13 @@ function createCard(data, section, myId) {
           api.deleteCard(card.getCardId())
             .then(() => {
               card.removeCardElement();
-              confirmButton.textContent = 'Да';
-            confirmButton.textContent = 'Да';
               popupWithConfirmation.close();
             }).catch((err) => {
             console.log(`ошибка при удалении карточек с сервера: ${err}`)
           })
+            .finally(() => {
+              confirmButton.textContent = 'Да';
+            })
         })
       },
       handleLikeClick: (evt) => {
@@ -112,13 +110,11 @@ Promise.all([api.getUserServerData(), api.getInitialCards()]).then(([userInfo, c
     },
     '.places');
 
-  api.getInitialCards()
-    .then((cards) => {
       cardList.renderItems(cards);
 
       // Создаем экземпляр класса попапа с формой добавления картинки
       const placeFormPopup = new PopupWithForm('.popup_contain_places', (data) => {
-        placeFormSubmitButton.textContent = 'Сохранение...'
+        placeFormPopup.renderLoading(true);
         api.addCard(data.placeName, data.placeLink)
           .then((card) => {
             const newCard = createCard(card, cardList, myUserId);
@@ -129,7 +125,7 @@ Promise.all([api.getUserServerData(), api.getInitialCards()]).then(([userInfo, c
             console.log(`ошибка при добавлении карточки сервер: ${err}`);
           })
           .finally(() => {
-            placeFormSubmitButton.textContent = 'Создать'
+            placeFormPopup.renderLoading(false, "Создать");
           })
       });
 
@@ -141,10 +137,6 @@ Promise.all([api.getUserServerData(), api.getInitialCards()]).then(([userInfo, c
       }
 
       addButton.addEventListener('click', handleOpenPlaceFormPopup);
-    })
-    .catch((err) => {
-      console.log(`ошибка при загрузке карточек с сервера: ${err}`);
-    });
 })
   .catch((err) => {
     console.log(`ошибка при получении данных пльзователя с сервера: ${err}`);
@@ -152,7 +144,7 @@ Promise.all([api.getUserServerData(), api.getInitialCards()]).then(([userInfo, c
 
 //создаем экземпляр класса попап с формой редактирования профиля
 const profileFormPopup = new PopupWithForm('.popup_contain_profile', (data) => {
-  profileFormSubmitButton.textContent = 'Сохранение...'
+  profileFormPopup.renderLoading(true)
   api.editUserProfileData(data.name, data.job)
     .then((info) => {
       profileFormPopup.close()
@@ -162,7 +154,7 @@ const profileFormPopup = new PopupWithForm('.popup_contain_profile', (data) => {
       console.log(`ошибка при изменении данных пльзователя: ${err}`);
     })
     .finally(() => {
-      profileFormSubmitButton.textContent = 'Сохранить'
+      profileFormPopup.renderLoading(false, "Сохранить")
     })
 });
 
@@ -170,7 +162,8 @@ profileFormPopup.setEventListeners();
 
 //создаем экземпляр класса попап с формой редактирования аватара
 const avatarFormPopup = new PopupWithForm('.popup_contain_avatar-form', (data) => {
-  avatarFormSubmitButton.textContent = 'Сохранение...'
+  //avatarFormSubmitButton.textContent = 'Сохранение...'
+  avatarFormPopup.renderLoading(true)
   api.editUserAvatar(data.avatarLink)
     .then((info) => {
       avatarFormPopup.close()
@@ -179,7 +172,8 @@ const avatarFormPopup = new PopupWithForm('.popup_contain_avatar-form', (data) =
     .catch((err) => {
       console.log(`ошибка при изменении аватара пльзователя: ${err}`); // выведем ошибку в консоль
     }).finally(() => {
-    avatarFormSubmitButton.textContent = 'Сохранить'
+    //avatarFormSubmitButton.textContent = 'Сохранить'
+    avatarFormPopup.renderLoading(false, "Сохранить")
   })
 });
 

@@ -5,10 +5,7 @@ export const jobInput = document.querySelector('.popup__input_type_job');
 export const addButton = document.querySelector('.lead__add-button');
 export const placeForm = document.querySelector('[name="placeForm"]');
 export const avatarEditForm = document.querySelector('[name="avatarEditForm"]');
-export const avatarContainer = document.querySelector('.profile__foto')
-export const avatarFormSubmitButton = avatarEditForm.querySelector('.popup__button')
-export const placeFormSubmitButton = placeForm.querySelector('.popup__button')
-export const profileFormSubmitButton = profileForm.querySelector('.popup__button')
+export const avatarContainer = document.querySelector('.profile__foto');
 export const confirmButton = document.querySelector('.popup_contain_confirmation').querySelector('.popup__button')
 
 export const validationConfig = {
