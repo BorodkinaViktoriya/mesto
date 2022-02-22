@@ -162,7 +162,6 @@ profileFormPopup.setEventListeners();
 
 //создаем экземпляр класса попап с формой редактирования аватара
 const avatarFormPopup = new PopupWithForm('.popup_contain_avatar-form', (data) => {
-  //avatarFormSubmitButton.textContent = 'Сохранение...'
   avatarFormPopup.renderLoading(true)
   api.editUserAvatar(data.avatarLink)
     .then((info) => {
@@ -172,7 +171,6 @@ const avatarFormPopup = new PopupWithForm('.popup_contain_avatar-form', (data) =
     .catch((err) => {
       console.log(`ошибка при изменении аватара пльзователя: ${err}`); // выведем ошибку в консоль
     }).finally(() => {
-    //avatarFormSubmitButton.textContent = 'Сохранить'
     avatarFormPopup.renderLoading(false, "Сохранить")
   })
 });
