@@ -22,5 +22,5 @@
 * fetch запросов для работы с сервером
 
 
-**ссылка на GitHub Pages**
+**ссылка на проект на GitHub Pages**
 https://borodkinaviktoriya.github.io/mesto/index.html
